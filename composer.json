@@ -14,7 +14,7 @@
     },
     "autoload": {
         "psr-0": {
-            "Tripolis": "src/"
+            "jobcastrop\\tripolis\\": "src/"
         }
     }
 }
