@@ -4,7 +4,17 @@ namespace jobcastrop\tripolis;
 
 class SmsMessage extends TripolisService
 {
-	public function create ($smsTypeId, $label, $name, $originatorNumber, $originator, $message, $alternativeMessage, $description, $properties)
+    public function create(
+        $smsTypeId,
+        $label,
+        $name = null,
+        $originatorNumber = null,
+        $originator = null,
+        $message,
+        $alternativeMessage = null,
+        $description = null,
+        $properties = null
+    )
 	{
 		$request = array(
 			'createRequest' => array(
@@ -16,13 +26,25 @@ class SmsMessage extends TripolisService
 				'message' => $message,
 				'alternativeMessage' => $alternativeMessage,
 				'description' => $description,
-				'properties' => $properties,			)		);
+				'properties' => $properties,
+			)
+		);
 
 		$result = $this->send("/api2/soap/SmsMessageService?wsdl", 'create', $request);
 		return $result;
 	}
 
-	public function update ($id, $label, $name, $originatorNumber, $originator, $message, $alternativeMessage, $description, $properties)
+    public function update(
+        $id,
+        $label = null,
+        $name = null,
+        $originatorNumber = null,
+        $originator = null,
+        $message = null,
+        $alternativeMessage = null,
+        $description = null,
+        $properties = null
+    )
 	{
 		$request = array(
 			'updateRequest' => array(
@@ -34,7 +56,9 @@ class SmsMessage extends TripolisService
 				'message' => $message,
 				'alternativeMessage' => $alternativeMessage,
 				'description' => $description,
-				'properties' => $properties,			)		);
+				'properties' => $properties,
+			)
+		);
 
 		$result = $this->send("/api2/soap/SmsMessageService?wsdl", 'update', $request);
 		return $result;
@@ -52,7 +76,9 @@ class SmsMessage extends TripolisService
 	{
 		$request = array(
 			'deleteRequest' => array(
-				'id' => $id,			)		);
+				'id' => $id,
+			)
+		);
 
 		$result = $this->send("/api2/soap/SmsMessageService?wsdl", 'delete', $request);
 		return $result;
@@ -63,13 +89,17 @@ class SmsMessage extends TripolisService
 		$request = array(
 			'getBySmsMessageTypeIdRequest' => array(
 				'smsTypeId' => $smsTypeId,
-				'paging' => array('pageSize' => 100, 'pageNr' => 1)			)		);
+				'paging' => array('pageSize' => 100, 'pageNr' => 1)
+			)
+		);
 
-		$return = [];		do {
+		$return = [];
+		do {
 			$result = $this->send("/api2/soap/SmsMessageService?wsdl", 'getBySmsMessageTypeId', $request);
 			$request['getBySmsMessageTypeIdRequest']['paging']['pageNr']++;
 			foreach($result->smsMessages->smsMessage as $row) {
-				$return[] = $row;			}
+				$return[] = $row;
+			}
 		} while(isset($result->paging->totalItems) && $result->paging->totalItems > count($return));
 
 		return $return;
@@ -79,7 +109,9 @@ class SmsMessage extends TripolisService
 	{
 		$request = array(
 			'getByIdRequest' => array(
-				'id' => $id,			)		);
+				'id' => $id,
+			)
+		);
 
 		$result = $this->send("/api2/soap/SmsMessageService?wsdl", 'getById', $request);
 		return $result->smsMessage;

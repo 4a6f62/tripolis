@@ -8,7 +8,9 @@ class Import extends TripolisService
 	{
 		$request = array(
 			'unscheduleImportContactsRequest' => array(
-				'id' => $id,			)		);
+				'id' => $id,
+			)
+		);
 
 		$result = $this->send("/api2/soap/ImportService?wsdl", 'unscheduleImportContacts', $request);
 		return $result;
@@ -18,13 +20,24 @@ class Import extends TripolisService
 	{
 		$request = array(
 			'getImportStatusRequest' => array(
-				'importId' => $importId,			)		);
+				'importId' => $importId,
+			)
+		);
 
 		$result = $this->send("/api2/soap/ImportService?wsdl", 'getImportStatus', $request);
 		return $result;
 	}
 
-	public function importContactsFromFtp ($contactDatabaseId, $contactGroupIds, $reportReceiverAddress, $importMode, $fileName, $extension, $ftpAccountId, $scheduleAt)
+    public function importContactsFromFtp(
+        $contactDatabaseId = null,
+        $contactGroupIds = null,
+        $reportReceiverAddress = null,
+        $importMode,
+        $fileName,
+        $extension,
+        $ftpAccountId,
+        $scheduleAt = null
+    )
 	{
 		$request = array(
 			'importContactsFromFtpRequest' => array(
@@ -35,13 +48,23 @@ class Import extends TripolisService
 				'fileName' => $fileName,
 				'extension' => $extension,
 				'ftpAccountId' => $ftpAccountId,
-				'scheduleAt' => $scheduleAt,			)		);
+				'scheduleAt' => $scheduleAt,
+			)
+		);
 
 		$result = $this->send("/api2/soap/ImportService?wsdl", 'importContactsFromFtp', $request);
 		return $result;
 	}
 
-	public function importContacts ($contactDatabaseId, $contactGroupIds, $reportReceiverAddress, $importMode, $fileName, $extension, $importFile)
+    public function importContacts(
+        $contactDatabaseId = null,
+        $contactGroupIds = null,
+        $reportReceiverAddress = null,
+        $importMode,
+        $fileName = null,
+        $extension,
+        $importFile
+    )
 	{
 		$request = array(
 			'importContactsRequest' => array(
@@ -51,7 +74,9 @@ class Import extends TripolisService
 				'importMode' => $importMode,
 				'fileName' => $fileName,
 				'extension' => $extension,
-				'importFile' => $importFile,			)		);
+				'importFile' => $importFile,
+			)
+		);
 
 		$result = $this->send("/api2/soap/ImportService?wsdl", 'importContacts', $request);
 		return $result;
@@ -62,13 +87,17 @@ class Import extends TripolisService
 		$request = array(
 			'getSchedulesByContactDatabaseIdRequest' => array(
 				'contactDatabase' => $contactDatabase,
-				'paging' => array('pageSize' => 100, 'pageNr' => 1)			)		);
+				'paging' => array('pageSize' => 100, 'pageNr' => 1)
+			)
+		);
 
-		$return = [];		do {
+		$return = [];
+		do {
 			$result = $this->send("/api2/soap/ImportService?wsdl", 'getSchedulesByContactDatabaseId', $request);
 			$request['getSchedulesByContactDatabaseIdRequest']['paging']['pageNr']++;
 			foreach($result->importSchedules->importSchedule as $row) {
-				$return[] = $row;			}
+				$return[] = $row;
+			}
 		} while(isset($result->paging->totalItems) && $result->paging->totalItems > count($return));
 
 		return $return;
@@ -82,7 +111,16 @@ class Import extends TripolisService
 		return $result;
 	}
 
-	public function scheduleImportContacts ($contactDatabase, $contactGroupIds, $reportReceiverAddress, $importMode, $fileName, $extension, $ftpAccountId, $schedule)
+    public function scheduleImportContacts(
+        $contactDatabase,
+        $contactGroupIds = null,
+        $reportReceiverAddress = null,
+        $importMode,
+        $fileName,
+        $extension,
+        $ftpAccountId,
+        $schedule
+    )
 	{
 		$request = array(
 			'scheduleImportContactsRequest' => array(
@@ -93,7 +131,9 @@ class Import extends TripolisService
 				'fileName' => $fileName,
 				'extension' => $extension,
 				'ftpAccountId' => $ftpAccountId,
-				'schedule' => $schedule,			)		);
+				'schedule' => $schedule,
+			)
+		);
 
 		$result = $this->send("/api2/soap/ImportService?wsdl", 'scheduleImportContacts', $request);
 		return $result;

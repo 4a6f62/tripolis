@@ -8,13 +8,17 @@ class ContactDatabase extends TripolisService
 	{
 		$request = array(
 			'getAllRequest' => array(
-				'paging' => array('pageSize' => 100, 'pageNr' => 1)			)		);
+				'paging' => array('pageSize' => 100, 'pageNr' => 1)
+			)
+		);
 
-		$return = [];		do {
+		$return = [];
+		do {
 			$result = $this->send("/api2/soap/ContactDatabaseService?wsdl", 'getAll', $request);
 			$request['getAllRequest']['paging']['pageNr']++;
 			foreach($result->contactDatabases->contactDatabase as $row) {
-				$return[] = $row;			}
+				$return[] = $row;
+			}
 		} while(isset($result->paging->totalItems) && $result->paging->totalItems > count($return));
 
 		return $return;
@@ -24,33 +28,39 @@ class ContactDatabase extends TripolisService
 	{
 		$request = array(
 			'getByIdRequest' => array(
-				'id' => $id,			)		);
+				'id' => $id,
+			)
+		);
 
 		$result = $this->send("/api2/soap/ContactDatabaseService?wsdl", 'getById', $request);
 		return $result->contactDatabase;
 	}
 
-	public function create ($label, $name, $properties, $contactDatabaseFieldGroups)
+    public function create($label, $name = null, $properties = null, $contactDatabaseFieldGroups)
 	{
 		$request = array(
 			'createRequest' => array(
 				'label' => $label,
 				'name' => $name,
 				'properties' => $properties,
-				'contactDatabaseFieldGroups' => $contactDatabaseFieldGroups,			)		);
+				'contactDatabaseFieldGroups' => $contactDatabaseFieldGroups,
+			)
+		);
 
 		$result = $this->send("/api2/soap/ContactDatabaseService?wsdl", 'create', $request);
 		return $result;
 	}
 
-	public function update ($id, $label, $name, $properties)
+    public function update($id, $label = null, $name = null, $properties = null)
 	{
 		$request = array(
 			'updateRequest' => array(
 				'id' => $id,
 				'label' => $label,
 				'name' => $name,
-				'properties' => $properties,			)		);
+				'properties' => $properties,
+			)
+		);
 
 		$result = $this->send("/api2/soap/ContactDatabaseService?wsdl", 'update', $request);
 		return $result;
@@ -60,7 +70,9 @@ class ContactDatabase extends TripolisService
 	{
 		$request = array(
 			'deleteRequest' => array(
-				'id' => $id,			)		);
+				'id' => $id,
+			)
+		);
 
 		$result = $this->send("/api2/soap/ContactDatabaseService?wsdl", 'delete', $request);
 		return $result;

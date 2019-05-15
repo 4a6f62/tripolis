@@ -4,30 +4,36 @@ namespace jobcastrop\tripolis;
 
 class ContactGroup extends TripolisService
 {
-	public function getByContactDatabaseId ($contactDatabaseId, $groupType)
+    public function getByContactDatabaseId($contactDatabaseId, $groupType = null)
 	{
 		$request = array(
 			'getByContactDatabaseIdRequest' => array(
 				'contactDatabaseId' => $contactDatabaseId,
 				'groupType' => $groupType,
-				'paging' => array('pageSize' => 100, 'pageNr' => 1)			)		);
+				'paging' => array('pageSize' => 100, 'pageNr' => 1)
+			)
+		);
 
-		$return = [];		do {
+		$return = [];
+		do {
 			$result = $this->send("/api2/soap/ContactGroupService?wsdl", 'getByContactDatabaseId', $request);
 			$request['getByContactDatabaseIdRequest']['paging']['pageNr']++;
 			foreach($result->contactGroups->contactGroup as $row) {
-				$return[] = $row;			}
+				$return[] = $row;
+			}
 		} while(isset($result->paging->totalItems) && $result->paging->totalItems > count($return));
 
 		return $return;
 	}
 
-	public function removeAllContactsFromGroup ($reference, $ip)
+    public function removeAllContactsFromGroup($reference = null, $ip = null)
 	{
 		$request = array(
 			'removeAllContactsFromGroupRequest' => array(
 				'reference' => $reference,
-				'ip' => $ip,			)		);
+				'ip' => $ip,
+			)
+		);
 
 		$result = $this->send("/api2/soap/ContactGroupService?wsdl", 'removeAllContactsFromGroup', $request);
 		return $result;
@@ -37,56 +43,68 @@ class ContactGroup extends TripolisService
 	{
 		$request = array(
 			'getByIdRequest' => array(
-				'id' => $id,			)		);
+				'id' => $id,
+			)
+		);
 
 		$result = $this->send("/api2/soap/ContactGroupService?wsdl", 'getById', $request);
 		return $result->contactGroup;
 	}
 
-	public function removeContactsFromGroup ($contactGroupId, $contactIds, $reference, $ip)
+    public function removeContactsFromGroup($contactGroupId, $contactIds, $reference = null, $ip = null)
 	{
 		$request = array(
 			'removeContactsFromGroupRequest' => array(
 				'contactGroupId' => $contactGroupId,
 				'contactIds' => $contactIds,
 				'reference' => $reference,
-				'ip' => $ip,			)		);
+				'ip' => $ip,
+			)
+		);
 
 		$result = $this->send("/api2/soap/ContactGroupService?wsdl", 'removeContactsFromGroup', $request);
 		return $result;
 	}
 
-	public function getByParentGroupId ($parentGroupId, $groupType)
+    public function getByParentGroupId($parentGroupId, $groupType = null)
 	{
 		$request = array(
 			'getByParentGroupIdRequest' => array(
 				'parentGroupId' => $parentGroupId,
 				'groupType' => $groupType,
-				'paging' => array('pageSize' => 100, 'pageNr' => 1)			)		);
+				'paging' => array('pageSize' => 100, 'pageNr' => 1)
+			)
+		);
 
-		$return = [];		do {
+		$return = [];
+		do {
 			$result = $this->send("/api2/soap/ContactGroupService?wsdl", 'getByParentGroupId', $request);
 			$request['getByParentGroupIdRequest']['paging']['pageNr']++;
 			foreach($result->contactGroups->contactGroup as $row) {
-				$return[] = $row;			}
+				$return[] = $row;
+			}
 		} while(isset($result->paging->totalItems) && $result->paging->totalItems > count($return));
 
 		return $return;
 	}
 
-	public function getContacts ($contactGroupId, $returnContactFields)
+    public function getContacts($contactGroupId, $returnContactFields = null)
 	{
 		$request = array(
 			'getContactsRequest' => array(
 				'contactGroupId' => $contactGroupId,
 				'returnContactFields' => $returnContactFields,
-				'paging' => array('pageSize' => 100, 'pageNr' => 1)			)		);
+				'paging' => array('pageSize' => 100, 'pageNr' => 1)
+			)
+		);
 
-		$return = [];		do {
+		$return = [];
+		do {
 			$result = $this->send("/api2/soap/ContactGroupService?wsdl", 'getContacts', $request);
 			$request['getContactsRequest']['paging']['pageNr']++;
 			foreach($result->contacts->contact as $row) {
-				$return[] = $row;			}
+				$return[] = $row;
+			}
 		} while(isset($result->paging->totalItems) && $result->paging->totalItems > count($return));
 
 		return $return;
@@ -96,7 +114,9 @@ class ContactGroup extends TripolisService
 	{
 		$request = array(
 			'deleteRequest' => array(
-				'id' => $id,			)		);
+				'id' => $id,
+			)
+		);
 
 		$result = $this->send("/api2/soap/ContactGroupService?wsdl", 'delete', $request);
 		return $result;
@@ -110,20 +130,29 @@ class ContactGroup extends TripolisService
 		return $result;
 	}
 
-	public function addContactsToGroup ($contactGroupId, $contactIds, $reference, $ip)
+    public function addContactsToGroup($contactGroupId, $contactIds, $reference = null, $ip = null)
 	{
 		$request = array(
 			'addContactsToGroupRequest' => array(
 				'contactGroupId' => $contactGroupId,
 				'contactIds' => $contactIds,
 				'reference' => $reference,
-				'ip' => $ip,			)		);
+				'ip' => $ip,
+			)
+		);
 
 		$result = $this->send("/api2/soap/ContactGroupService?wsdl", 'addContactsToGroup', $request);
 		return $result;
 	}
 
-	public function create ($contactDatabaseId, $label, $name, $groupType, $parentGroupId, $properties)
+    public function create(
+        $contactDatabaseId,
+        $label,
+        $name = null,
+        $groupType,
+        $parentGroupId = null,
+        $properties = null
+    )
 	{
 		$request = array(
 			'createRequest' => array(
@@ -132,13 +161,23 @@ class ContactGroup extends TripolisService
 				'name' => $name,
 				'groupType' => $groupType,
 				'parentGroupId' => $parentGroupId,
-				'properties' => $properties,			)		);
+				'properties' => $properties,
+			)
+		);
 
 		$result = $this->send("/api2/soap/ContactGroupService?wsdl", 'create', $request);
 		return $result;
 	}
 
-	public function update ($id, $label, $name, $groupType, $parentGroupId, $archived, $properties)
+    public function update(
+        $id,
+        $label = null,
+        $name = null,
+        $groupType = null,
+        $parentGroupId = null,
+        $archived = null,
+        $properties = null
+    )
 	{
 		$request = array(
 			'updateRequest' => array(
@@ -148,7 +187,9 @@ class ContactGroup extends TripolisService
 				'groupType' => $groupType,
 				'parentGroupId' => $parentGroupId,
 				'archived' => $archived,
-				'properties' => $properties,			)		);
+				'properties' => $properties,
+			)
+		);
 
 		$result = $this->send("/api2/soap/ContactGroupService?wsdl", 'update', $request);
 		return $result;

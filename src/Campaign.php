@@ -9,13 +9,17 @@ class Campaign extends TripolisService
 		$request = array(
 			'getByCampaignDefinitionIdRequest' => array(
 				'campaignDefinitionId' => $campaignDefinitionId,
-				'paging' => array('pageSize' => 100, 'pageNr' => 1)			)		);
+				'paging' => array('pageSize' => 100, 'pageNr' => 1)
+			)
+		);
 
-		$return = [];		do {
+		$return = [];
+		do {
 			$result = $this->send("/api2/soap/CampaignService?wsdl", 'getByCampaignDefinitionId', $request);
 			$request['getByCampaignDefinitionIdRequest']['paging']['pageNr']++;
 			foreach($result->campaigns->campaign as $row) {
-				$return[] = $row;			}
+				$return[] = $row;
+			}
 		} while(isset($result->paging->totalItems) && $result->paging->totalItems > count($return));
 
 		return $return;
@@ -25,7 +29,9 @@ class Campaign extends TripolisService
 	{
 		$request = array(
 			'deactivateRequest' => array(
-				'id' => $id,			)		);
+				'id' => $id,
+			)
+		);
 
 		$result = $this->send("/api2/soap/CampaignService?wsdl", 'deactivate', $request);
 		return $result;
@@ -35,7 +41,9 @@ class Campaign extends TripolisService
 	{
 		$request = array(
 			'getByIdRequest' => array(
-				'id' => $id,			)		);
+				'id' => $id,
+			)
+		);
 
 		$result = $this->send("/api2/soap/CampaignService?wsdl", 'getById', $request);
 		return $result->campaign;
@@ -49,7 +57,7 @@ class Campaign extends TripolisService
 		return $result;
 	}
 
-	public function activate ($name, $label, $startTime, $endTime, $description)
+    public function activate($name = null, $label = null, $startTime, $endTime, $description = null)
 	{
 		$request = array(
 			'activateRequest' => array(
@@ -57,7 +65,9 @@ class Campaign extends TripolisService
 				'label' => $label,
 				'startTime' => $startTime,
 				'endTime' => $endTime,
-				'description' => $description,			)		);
+				'description' => $description,
+			)
+		);
 
 		$result = $this->send("/api2/soap/CampaignService?wsdl", 'activate', $request);
 		return $result;

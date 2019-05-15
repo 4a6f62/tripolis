@@ -10,19 +10,23 @@ class ArticleType extends TripolisService
 			'getByWorkspaceIdRequest' => array(
 				'workspaceId' => $workspaceId,
 				'returnArticleFields' => $returnArticleFields,
-				'paging' => array('pageSize' => 100, 'pageNr' => 1)			)		);
+				'paging' => array('pageSize' => 100, 'pageNr' => 1)
+			)
+		);
 
-		$return = [];		do {
+		$return = [];
+		do {
 			$result = $this->send("/api2/soap/ArticleTypeService?wsdl", 'getByWorkspaceId', $request);
 			$request['getByWorkspaceIdRequest']['paging']['pageNr']++;
 			foreach($result->articleTypes->articleType as $row) {
-				$return[] = $row;			}
+				$return[] = $row;
+			}
 		} while(isset($result->paging->totalItems) && $result->paging->totalItems > count($return));
 
 		return $return;
 	}
 
-	public function create ($workspaceId, $label, $name, $articleFields, $properties)
+    public function create($workspaceId, $label, $name = null, $articleFields = null, $properties = null)
 	{
 		$request = array(
 			'createRequest' => array(
@@ -30,19 +34,23 @@ class ArticleType extends TripolisService
 				'label' => $label,
 				'name' => $name,
 				'articleFields' => $articleFields,
-				'properties' => $properties,			)		);
+				'properties' => $properties,
+			)
+		);
 
 		$result = $this->send("/api2/soap/ArticleTypeService?wsdl", 'create', $request);
 		return $result;
 	}
 
-	public function update ($id, $label, $name)
+    public function update($id, $label = null, $name = null)
 	{
 		$request = array(
 			'updateRequest' => array(
 				'id' => $id,
 				'label' => $label,
-				'name' => $name,			)		);
+				'name' => $name,
+			)
+		);
 
 		$result = $this->send("/api2/soap/ArticleTypeService?wsdl", 'update', $request);
 		return $result;
@@ -52,7 +60,9 @@ class ArticleType extends TripolisService
 	{
 		$request = array(
 			'deleteRequest' => array(
-				'id' => $id,			)		);
+				'id' => $id,
+			)
+		);
 
 		$result = $this->send("/api2/soap/ArticleTypeService?wsdl", 'delete', $request);
 		return $result;
@@ -70,7 +80,9 @@ class ArticleType extends TripolisService
 	{
 		$request = array(
 			'countByWorkspaceIdRequest' => array(
-				'workspaceId' => $workspaceId,			)		);
+				'workspaceId' => $workspaceId,
+			)
+		);
 
 		$result = $this->send("/api2/soap/ArticleTypeService?wsdl", 'countByWorkspaceId', $request);
 		return $result;
@@ -80,7 +92,9 @@ class ArticleType extends TripolisService
 	{
 		$request = array(
 			'getByIdRequest' => array(
-				'id' => $id,			)		);
+				'id' => $id,
+			)
+		);
 
 		$result = $this->send("/api2/soap/ArticleTypeService?wsdl", 'getById', $request);
 		return $result->articleType;

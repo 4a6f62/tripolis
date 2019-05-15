@@ -4,7 +4,19 @@ namespace jobcastrop\tripolis;
 
 class DirectEmail extends TripolisService
 {
-	public function create ($directEmailTypeId, $label, $name, $subject, $description, $htmlSource, $textSource, $fromName, $fromAddress, $replyToAddress, $properties)
+    public function create(
+        $directEmailTypeId,
+        $label,
+        $name = null,
+        $subject,
+        $description = null,
+        $htmlSource = null,
+        $textSource = null,
+        $fromName = null,
+        $fromAddress = null,
+        $replyToAddress = null,
+        $properties = null
+    )
 	{
 		$request = array(
 			'createRequest' => array(
@@ -18,13 +30,27 @@ class DirectEmail extends TripolisService
 				'fromName' => $fromName,
 				'fromAddress' => $fromAddress,
 				'replyToAddress' => $replyToAddress,
-				'properties' => $properties,			)		);
+				'properties' => $properties,
+			)
+		);
 
 		$result = $this->send("/api2/soap/DirectEmailService?wsdl", 'create', $request);
 		return $result;
 	}
 
-	public function update ($id, $label, $name, $subject, $description, $htmlSource, $textSource, $fromName, $fromAddress, $replyToAddress, $properties)
+    public function update(
+        $id,
+        $label = null,
+        $name = null,
+        $subject = null,
+        $description = null,
+        $htmlSource = null,
+        $textSource = null,
+        $fromName = null,
+        $fromAddress = null,
+        $replyToAddress = null,
+        $properties = null
+    )
 	{
 		$request = array(
 			'updateRequest' => array(
@@ -38,7 +64,9 @@ class DirectEmail extends TripolisService
 				'fromName' => $fromName,
 				'fromAddress' => $fromAddress,
 				'replyToAddress' => $replyToAddress,
-				'properties' => $properties,			)		);
+				'properties' => $properties,
+			)
+		);
 
 		$result = $this->send("/api2/soap/DirectEmailService?wsdl", 'update', $request);
 		return $result;
@@ -49,7 +77,9 @@ class DirectEmail extends TripolisService
 		$request = array(
 			'assignAttachmentRequest' => array(
 				'id' => $id,
-				'attachmentId' => $attachmentId,			)		);
+				'attachmentId' => $attachmentId,
+			)
+		);
 
 		$result = $this->send("/api2/soap/DirectEmailService?wsdl", 'assignAttachment', $request);
 		return $result;
@@ -59,7 +89,9 @@ class DirectEmail extends TripolisService
 	{
 		$request = array(
 			'deleteRequest' => array(
-				'id' => $id,			)		);
+				'id' => $id,
+			)
+		);
 
 		$result = $this->send("/api2/soap/DirectEmailService?wsdl", 'delete', $request);
 		return $result;
@@ -78,7 +110,9 @@ class DirectEmail extends TripolisService
 		$request = array(
 			'unassignAttachmentRequest' => array(
 				'id' => $id,
-				'attachmentId' => $attachmentId,			)		);
+				'attachmentId' => $attachmentId,
+			)
+		);
 
 		$result = $this->send("/api2/soap/DirectEmailService?wsdl", 'unassignAttachment', $request);
 		return $result;
@@ -89,24 +123,30 @@ class DirectEmail extends TripolisService
 		$request = array(
 			'getByDirectEmailTypeIdRequest' => array(
 				'directEmailTypeId' => $directEmailTypeId,
-				'paging' => array('pageSize' => 100, 'pageNr' => 1)			)		);
+				'paging' => array('pageSize' => 100, 'pageNr' => 1)
+			)
+		);
 
-		$return = [];		do {
+		$return = [];
+		do {
 			$result = $this->send("/api2/soap/DirectEmailService?wsdl", 'getByDirectEmailTypeId', $request);
 			$request['getByDirectEmailTypeIdRequest']['paging']['pageNr']++;
 			foreach($result->directEmails->directEmail as $row) {
-				$return[] = $row;			}
+				$return[] = $row;
+			}
 		} while(isset($result->paging->totalItems) && $result->paging->totalItems > count($return));
 
 		return $return;
 	}
 
-	public function preview ($id, $contactId)
+    public function preview($id, $contactId = null)
 	{
 		$request = array(
 			'previewRequest' => array(
 				'id' => $id,
-				'contactId' => $contactId,			)		);
+				'contactId' => $contactId,
+			)
+		);
 
 		$result = $this->send("/api2/soap/DirectEmailService?wsdl", 'preview', $request);
 		return $result->directEmail;
@@ -116,7 +156,9 @@ class DirectEmail extends TripolisService
 	{
 		$request = array(
 			'getByIdRequest' => array(
-				'id' => $id,			)		);
+				'id' => $id,
+			)
+		);
 
 		$result = $this->send("/api2/soap/DirectEmailService?wsdl", 'getById', $request);
 		return $result->directEmail;

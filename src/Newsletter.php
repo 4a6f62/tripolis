@@ -4,12 +4,14 @@ namespace jobcastrop\tripolis;
 
 class Newsletter extends TripolisService
 {
-	public function preview ($id, $contactId)
+    public function preview($id, $contactId = null)
 	{
 		$request = array(
 			'previewRequest' => array(
 				'id' => $id,
-				'contactId' => $contactId,			)		);
+				'contactId' => $contactId,
+			)
+		);
 
 		$result = $this->send("/api2/soap/NewsletterService?wsdl", 'preview', $request);
 		return $result->newsletter;
@@ -20,13 +22,17 @@ class Newsletter extends TripolisService
 		$request = array(
 			'getByNewsletterTypeIdRequest' => array(
 				'newsletterTypeId' => $newsletterTypeId,
-				'paging' => array('pageSize' => 100, 'pageNr' => 1)			)		);
+				'paging' => array('pageSize' => 100, 'pageNr' => 1)
+			)
+		);
 
-		$return = [];		do {
+		$return = [];
+		do {
 			$result = $this->send("/api2/soap/NewsletterService?wsdl", 'getByNewsletterTypeId', $request);
 			$request['getByNewsletterTypeIdRequest']['paging']['pageNr']++;
 			foreach($result->newsletters->newsletter as $row) {
-				$return[] = $row;			}
+				$return[] = $row;
+			}
 		} while(isset($result->paging->totalItems) && $result->paging->totalItems > count($return));
 
 		return $return;
@@ -36,7 +42,9 @@ class Newsletter extends TripolisService
 	{
 		$request = array(
 			'getByIdRequest' => array(
-				'id' => $id,			)		);
+				'id' => $id,
+			)
+		);
 
 		$result = $this->send("/api2/soap/NewsletterService?wsdl", 'getById', $request);
 		return $result->newsletter;
@@ -48,13 +56,23 @@ class Newsletter extends TripolisService
 			'copyRequest' => array(
 				'newsletterId' => $newsletterId,
 				'label' => $label,
-				'name' => $name,			)		);
+				'name' => $name,
+			)
+		);
 
 		$result = $this->send("/api2/soap/NewsletterService?wsdl", 'copy', $request);
 		return $result;
 	}
 
-	public function create ($newsletterTypeId, $label, $name, $subject, $fromName, $fromAddress, $properties)
+    public function create(
+        $newsletterTypeId,
+        $label,
+        $name = null,
+        $subject = null,
+        $fromName = null,
+        $fromAddress = null,
+        $properties = null
+    )
 	{
 		$request = array(
 			'createRequest' => array(
@@ -64,13 +82,23 @@ class Newsletter extends TripolisService
 				'subject' => $subject,
 				'fromName' => $fromName,
 				'fromAddress' => $fromAddress,
-				'properties' => $properties,			)		);
+				'properties' => $properties,
+			)
+		);
 
 		$result = $this->send("/api2/soap/NewsletterService?wsdl", 'create', $request);
 		return $result;
 	}
 
-	public function update ($id, $label, $name, $subject, $fromName, $fromAddress, $properties)
+    public function update(
+        $id,
+        $label = null,
+        $name = null,
+        $subject = null,
+        $fromName = null,
+        $fromAddress = null,
+        $properties = null
+    )
 	{
 		$request = array(
 			'updateRequest' => array(
@@ -80,7 +108,9 @@ class Newsletter extends TripolisService
 				'subject' => $subject,
 				'fromName' => $fromName,
 				'fromAddress' => $fromAddress,
-				'properties' => $properties,			)		);
+				'properties' => $properties,
+			)
+		);
 
 		$result = $this->send("/api2/soap/NewsletterService?wsdl", 'update', $request);
 		return $result;
@@ -91,7 +121,9 @@ class Newsletter extends TripolisService
 		$request = array(
 			'assignAttachmentRequest' => array(
 				'id' => $id,
-				'attachmentId' => $attachmentId,			)		);
+				'attachmentId' => $attachmentId,
+			)
+		);
 
 		$result = $this->send("/api2/soap/NewsletterService?wsdl", 'assignAttachment', $request);
 		return $result;
@@ -101,7 +133,9 @@ class Newsletter extends TripolisService
 	{
 		$request = array(
 			'deleteRequest' => array(
-				'id' => $id,			)		);
+				'id' => $id,
+			)
+		);
 
 		$result = $this->send("/api2/soap/NewsletterService?wsdl", 'delete', $request);
 		return $result;
@@ -120,7 +154,9 @@ class Newsletter extends TripolisService
 		$request = array(
 			'unassignAttachmentRequest' => array(
 				'id' => $id,
-				'attachmentId' => $attachmentId,			)		);
+				'attachmentId' => $attachmentId,
+			)
+		);
 
 		$result = $this->send("/api2/soap/NewsletterService?wsdl", 'unassignAttachment', $request);
 		return $result;

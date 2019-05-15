@@ -8,7 +8,9 @@ class DirectEmailType extends TripolisService
 	{
 		$request = array(
 			'getByIdRequest' => array(
-				'id' => $id,			)		);
+				'id' => $id,
+			)
+		);
 
 		$result = $this->send("/api2/soap/DirectEmailTypeService?wsdl", 'getById', $request);
 		return $result->directEmailType;
@@ -19,19 +21,37 @@ class DirectEmailType extends TripolisService
 		$request = array(
 			'getByWorkspaceIdRequest' => array(
 				'workspaceId' => $workspaceId,
-				'paging' => array('pageSize' => 100, 'pageNr' => 1)			)		);
+				'paging' => array('pageSize' => 100, 'pageNr' => 1)
+			)
+		);
 
-		$return = [];		do {
+		$return = [];
+		do {
 			$result = $this->send("/api2/soap/DirectEmailTypeService?wsdl", 'getByWorkspaceId', $request);
 			$request['getByWorkspaceIdRequest']['paging']['pageNr']++;
 			foreach($result->directEmailTypes->directEmailType as $row) {
-				$return[] = $row;			}
+				$return[] = $row;
+			}
 		} while(isset($result->paging->totalItems) && $result->paging->totalItems > count($return));
 
 		return $return;
 	}
 
-	public function create ($workspaceId, $label, $name, $fromName, $fromAddress, $toEmailFieldId, $replyToAddress, $externalHtmlUrl, $externalTextUrl, $enableWysiwygEditor, $encoding, $enableAttachments, $properties)
+    public function create(
+        $workspaceId,
+        $label,
+        $name = null,
+        $fromName = null,
+        $fromAddress,
+        $toEmailFieldId,
+        $replyToAddress = null,
+        $externalHtmlUrl = null,
+        $externalTextUrl = null,
+        $enableWysiwygEditor = null,
+        $encoding = null,
+        $enableAttachments = null,
+        $properties = null
+    )
 	{
 		$request = array(
 			'createRequest' => array(
@@ -47,13 +67,29 @@ class DirectEmailType extends TripolisService
 				'enableWysiwygEditor' => $enableWysiwygEditor,
 				'encoding' => $encoding,
 				'enableAttachments' => $enableAttachments,
-				'properties' => $properties,			)		);
+				'properties' => $properties,
+			)
+		);
 
 		$result = $this->send("/api2/soap/DirectEmailTypeService?wsdl", 'create', $request);
 		return $result;
 	}
 
-	public function update ($id, $label, $name, $fromName, $fromAddress, $toEmailFieldId, $replyToAddress, $externalHtmlUrl, $externalTextUrl, $enableWysiwygEditor, $encoding, $enableAttachments, $properties)
+    public function update(
+        $id,
+        $label = null,
+        $name = null,
+        $fromName = null,
+        $fromAddress = null,
+        $toEmailFieldId = null,
+        $replyToAddress = null,
+        $externalHtmlUrl = null,
+        $externalTextUrl = null,
+        $enableWysiwygEditor = null,
+        $encoding = null,
+        $enableAttachments = null,
+        $properties = null
+    )
 	{
 		$request = array(
 			'updateRequest' => array(
@@ -69,7 +105,9 @@ class DirectEmailType extends TripolisService
 				'enableWysiwygEditor' => $enableWysiwygEditor,
 				'encoding' => $encoding,
 				'enableAttachments' => $enableAttachments,
-				'properties' => $properties,			)		);
+				'properties' => $properties,
+			)
+		);
 
 		$result = $this->send("/api2/soap/DirectEmailTypeService?wsdl", 'update', $request);
 		return $result;
@@ -79,7 +117,9 @@ class DirectEmailType extends TripolisService
 	{
 		$request = array(
 			'deleteRequest' => array(
-				'id' => $id,			)		);
+				'id' => $id,
+			)
+		);
 
 		$result = $this->send("/api2/soap/DirectEmailTypeService?wsdl", 'delete', $request);
 		return $result;

@@ -16,13 +16,22 @@ class NewsletterSection extends TripolisService
 	{
 		$request = array(
 			'deleteRequest' => array(
-				'id' => $id,			)		);
+				'id' => $id,
+			)
+		);
 
 		$result = $this->send("/api2/soap/NewsletterSectionService?wsdl", 'delete', $request);
 		return $result;
 	}
 
-	public function create ($newsletterTypeId, $label, $name, $defaultArticleTypeId, $sectionFeeds, $properties)
+    public function create(
+        $newsletterTypeId,
+        $label,
+        $name = null,
+        $defaultArticleTypeId = null,
+        $sectionFeeds = null,
+        $properties = null
+    )
 	{
 		$request = array(
 			'createRequest' => array(
@@ -31,13 +40,22 @@ class NewsletterSection extends TripolisService
 				'name' => $name,
 				'defaultArticleTypeId' => $defaultArticleTypeId,
 				'sectionFeeds' => $sectionFeeds,
-				'properties' => $properties,			)		);
+				'properties' => $properties,
+			)
+		);
 
 		$result = $this->send("/api2/soap/NewsletterSectionService?wsdl", 'create', $request);
 		return $result;
 	}
 
-	public function update ($id, $label, $name, $defaultArticleTypeId, $sectionFeeds, $properties)
+    public function update(
+        $id,
+        $label = null,
+        $name = null,
+        $defaultArticleTypeId = null,
+        $sectionFeeds = null,
+        $properties = null
+    )
 	{
 		$request = array(
 			'updateRequest' => array(
@@ -46,7 +64,9 @@ class NewsletterSection extends TripolisService
 				'name' => $name,
 				'defaultArticleTypeId' => $defaultArticleTypeId,
 				'sectionFeeds' => $sectionFeeds,
-				'properties' => $properties,			)		);
+				'properties' => $properties,
+			)
+		);
 
 		$result = $this->send("/api2/soap/NewsletterSectionService?wsdl", 'update', $request);
 		return $result;
@@ -57,13 +77,17 @@ class NewsletterSection extends TripolisService
 		$request = array(
 			'getByNewsletterTypeIdRequest' => array(
 				'newsletterTypeId' => $newsletterTypeId,
-				'paging' => array('pageSize' => 100, 'pageNr' => 1)			)		);
+				'paging' => array('pageSize' => 100, 'pageNr' => 1)
+			)
+		);
 
-		$return = [];		do {
+		$return = [];
+		do {
 			$result = $this->send("/api2/soap/NewsletterSectionService?wsdl", 'getByNewsletterTypeId', $request);
 			$request['getByNewsletterTypeIdRequest']['paging']['pageNr']++;
 			foreach($result->newsletterSections->newsletterSection as $row) {
-				$return[] = $row;			}
+				$return[] = $row;
+			}
 		} while(isset($result->paging->totalItems) && $result->paging->totalItems > count($return));
 
 		return $return;
@@ -73,7 +97,9 @@ class NewsletterSection extends TripolisService
 	{
 		$request = array(
 			'getByIdRequest' => array(
-				'id' => $id,			)		);
+				'id' => $id,
+			)
+		);
 
 		$result = $this->send("/api2/soap/NewsletterSectionService?wsdl", 'getById', $request);
 		return $result->newsletterSection;

@@ -4,19 +4,23 @@ namespace jobcastrop\tripolis;
 
 class Reporting extends TripolisService
 {
-	public function getDeliveredBySmsJobId ($mailJobId, $returnContactFields)
+    public function getDeliveredBySmsJobId($mailJobId, $returnContactFields = null)
 	{
 		$request = array(
 			'getDeliveredBySmsJobIdRequest' => array(
 				'mailJobId' => $mailJobId,
 				'returnContactFields' => $returnContactFields,
-				'paging' => array('pageSize' => 100, 'pageNr' => 1)			)		);
+				'paging' => array('pageSize' => 100, 'pageNr' => 1)
+			)
+		);
 
-		$return = [];		do {
+		$return = [];
+		do {
 			$result = $this->send("/api2/soap/ReportingService?wsdl", 'getDeliveredBySmsJobId', $request);
 			$request['getDeliveredBySmsJobIdRequest']['paging']['pageNr']++;
 			foreach($result->contacts->contact as $row) {
-				$return[] = $row;			}
+				$return[] = $row;
+			}
 		} while(isset($result->paging->totalItems) && $result->paging->totalItems > count($return));
 
 		return $return;
@@ -27,13 +31,17 @@ class Reporting extends TripolisService
 		$request = array(
 			'getBouncedBySmsJobIdRequest' => array(
 				'timeRange' => $timeRange,
-				'paging' => array('pageSize' => 100, 'pageNr' => 1)			)		);
+				'paging' => array('pageSize' => 100, 'pageNr' => 1)
+			)
+		);
 
-		$return = [];		do {
+		$return = [];
+		do {
 			$result = $this->send("/api2/soap/ReportingService?wsdl", 'getBouncedBySmsJobId', $request);
 			$request['getBouncedBySmsJobIdRequest']['paging']['pageNr']++;
 			foreach($result->bouncedContacts->bouncedContact as $row) {
-				$return[] = $row;			}
+				$return[] = $row;
+			}
 		} while(isset($result->paging->totalItems) && $result->paging->totalItems > count($return));
 
 		return $return;
@@ -44,13 +52,17 @@ class Reporting extends TripolisService
 		$request = array(
 			'getClickedByMailJobIdRequest' => array(
 				'timeRange' => $timeRange,
-				'paging' => array('pageSize' => 100, 'pageNr' => 1)			)		);
+				'paging' => array('pageSize' => 100, 'pageNr' => 1)
+			)
+		);
 
-		$return = [];		do {
+		$return = [];
+		do {
 			$result = $this->send("/api2/soap/ReportingService?wsdl", 'getClickedByMailJobId', $request);
 			$request['getClickedByMailJobIdRequest']['paging']['pageNr']++;
 			foreach($result->clicks->click as $row) {
-				$return[] = $row;			}
+				$return[] = $row;
+			}
 		} while(isset($result->paging->totalItems) && $result->paging->totalItems > count($return));
 
 		return $return;
@@ -61,13 +73,17 @@ class Reporting extends TripolisService
 		$request = array(
 			'getSkippedBySmsJobIdRequest' => array(
 				'timeRange' => $timeRange,
-				'paging' => array('pageSize' => 100, 'pageNr' => 1)			)		);
+				'paging' => array('pageSize' => 100, 'pageNr' => 1)
+			)
+		);
 
-		$return = [];		do {
+		$return = [];
+		do {
 			$result = $this->send("/api2/soap/ReportingService?wsdl", 'getSkippedBySmsJobId', $request);
 			$request['getSkippedBySmsJobIdRequest']['paging']['pageNr']++;
 			foreach($result->skippedContacts->skippedContact as $row) {
-				$return[] = $row;			}
+				$return[] = $row;
+			}
 		} while(isset($result->paging->totalItems) && $result->paging->totalItems > count($return));
 
 		return $return;
@@ -77,7 +93,9 @@ class Reporting extends TripolisService
 	{
 		$request = array(
 			'getSmsSummaryRequest' => array(
-				'mailJobId' => $mailJobId,			)		);
+				'mailJobId' => $mailJobId,
+			)
+		);
 
 		$result = $this->send("/api2/soap/ReportingService?wsdl", 'getSmsSummary', $request);
 		return $result->smsSummary->job;
@@ -87,7 +105,9 @@ class Reporting extends TripolisService
 	{
 		$request = array(
 			'getClicksPerLinkInHtmlByMailJobIdRequest' => array(
-				'mailJobId' => $mailJobId,			)		);
+				'mailJobId' => $mailJobId,
+			)
+		);
 
 		$result = $this->send("/api2/soap/ReportingService?wsdl", 'getClicksPerLinkInHtmlByMailJobId', $request);
 		return $result;
@@ -97,7 +117,9 @@ class Reporting extends TripolisService
 	{
 		$request = array(
 			'getEmailSummaryRequest' => array(
-				'mailJobId' => $mailJobId,			)		);
+				'mailJobId' => $mailJobId,
+			)
+		);
 
 		$result = $this->send("/api2/soap/ReportingService?wsdl", 'getEmailSummary', $request);
 		return $result->emailSummary->job;
@@ -111,19 +133,23 @@ class Reporting extends TripolisService
 		return $result;
 	}
 
-	public function getDeliveredByMailJobId ($mailJobId, $returnContactFields)
+    public function getDeliveredByMailJobId($mailJobId, $returnContactFields = null)
 	{
 		$request = array(
 			'getDeliveredByMailJobIdRequest' => array(
 				'mailJobId' => $mailJobId,
 				'returnContactFields' => $returnContactFields,
-				'paging' => array('pageSize' => 100, 'pageNr' => 1)			)		);
+				'paging' => array('pageSize' => 100, 'pageNr' => 1)
+			)
+		);
 
-		$return = [];		do {
+		$return = [];
+		do {
 			$result = $this->send("/api2/soap/ReportingService?wsdl", 'getDeliveredByMailJobId', $request);
 			$request['getDeliveredByMailJobIdRequest']['paging']['pageNr']++;
 			foreach($result->contacts->contact as $row) {
-				$return[] = $row;			}
+				$return[] = $row;
+			}
 		} while(isset($result->paging->totalItems) && $result->paging->totalItems > count($return));
 
 		return $return;
@@ -134,13 +160,17 @@ class Reporting extends TripolisService
 		$request = array(
 			'getBouncedByMailJobIdRequest' => array(
 				'timeRange' => $timeRange,
-				'paging' => array('pageSize' => 100, 'pageNr' => 1)			)		);
+				'paging' => array('pageSize' => 100, 'pageNr' => 1)
+			)
+		);
 
-		$return = [];		do {
+		$return = [];
+		do {
 			$result = $this->send("/api2/soap/ReportingService?wsdl", 'getBouncedByMailJobId', $request);
 			$request['getBouncedByMailJobIdRequest']['paging']['pageNr']++;
 			foreach($result->bouncedContacts->bouncedContact as $row) {
-				$return[] = $row;			}
+				$return[] = $row;
+			}
 		} while(isset($result->paging->totalItems) && $result->paging->totalItems > count($return));
 
 		return $return;
@@ -151,13 +181,17 @@ class Reporting extends TripolisService
 		$request = array(
 			'getSkippedByMailJobIdRequest' => array(
 				'timeRange' => $timeRange,
-				'paging' => array('pageSize' => 100, 'pageNr' => 1)			)		);
+				'paging' => array('pageSize' => 100, 'pageNr' => 1)
+			)
+		);
 
-		$return = [];		do {
+		$return = [];
+		do {
 			$result = $this->send("/api2/soap/ReportingService?wsdl", 'getSkippedByMailJobId', $request);
 			$request['getSkippedByMailJobIdRequest']['paging']['pageNr']++;
 			foreach($result->skippedContacts->skippedContact as $row) {
-				$return[] = $row;			}
+				$return[] = $row;
+			}
 		} while(isset($result->paging->totalItems) && $result->paging->totalItems > count($return));
 
 		return $return;
@@ -168,13 +202,17 @@ class Reporting extends TripolisService
 		$request = array(
 			'getOpenedByMailJobIdRequest' => array(
 				'timeRange' => $timeRange,
-				'paging' => array('pageSize' => 100, 'pageNr' => 1)			)		);
+				'paging' => array('pageSize' => 100, 'pageNr' => 1)
+			)
+		);
 
-		$return = [];		do {
+		$return = [];
+		do {
 			$result = $this->send("/api2/soap/ReportingService?wsdl", 'getOpenedByMailJobId', $request);
 			$request['getOpenedByMailJobIdRequest']['paging']['pageNr']++;
 			foreach($result->opens->open as $row) {
-				$return[] = $row;			}
+				$return[] = $row;
+			}
 		} while(isset($result->paging->totalItems) && $result->paging->totalItems > count($return));
 
 		return $return;

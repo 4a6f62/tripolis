@@ -12,7 +12,20 @@ class Subscription extends TripolisService
 		return $result;
 	}
 
-	public function subscribeContact ($contactDatabase, $workspace, $contactId, $contactFields, $contactGroupSubscriptions, $contactGroupUnSubscriptions, $directEmail, $newsletter, $smsMessageId, $jobProperties, $ip, $reference)
+    public function subscribeContact(
+        $contactDatabase,
+        $workspace = null,
+        $contactId = null,
+        $contactFields = null,
+        $contactGroupSubscriptions,
+        $contactGroupUnSubscriptions = null,
+        $directEmail = null,
+        $newsletter = null,
+        $smsMessageId = null,
+        $jobProperties = null,
+        $ip,
+        $reference = null
+    )
 	{
 		$request = array(
 			'subscribeContactRequest' => array(
@@ -27,7 +40,9 @@ class Subscription extends TripolisService
 				'smsMessageId' => $smsMessageId,
 				'jobProperties' => $jobProperties,
 				'ip' => $ip,
-				'reference' => $reference,			)		);
+				'reference' => $reference,
+			)
+		);
 
 		$result = $this->send("/api2/soap/SubscriptionService?wsdl", 'subscribeContact', $request);
 		return $result;

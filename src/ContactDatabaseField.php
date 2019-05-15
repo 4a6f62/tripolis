@@ -4,7 +4,23 @@ namespace jobcastrop\tripolis;
 
 class ContactDatabaseField extends TripolisService
 {
-	public function create ($contactDatabaseId, $label, $name, $type, $minLength, $maxLength, $defaultValue, $key, $required, $inOverview, $contactDatabaseFieldGroupId, $position, $kindOfField, $picklistItems, $properties)
+    public function create(
+        $contactDatabaseId,
+        $label,
+        $name = null,
+        $type,
+        $minLength = null,
+        $maxLength = null,
+        $defaultValue = null,
+        $key,
+        $required,
+        $inOverview,
+        $contactDatabaseFieldGroupId = null,
+        $position,
+        $kindOfField = null,
+        $picklistItems = null,
+        $properties = null
+    )
 	{
 		$request = array(
 			'createRequest' => array(
@@ -22,13 +38,30 @@ class ContactDatabaseField extends TripolisService
 				'position' => $position,
 				'kindOfField' => $kindOfField,
 				'picklistItems' => $picklistItems,
-				'properties' => $properties,			)		);
+				'properties' => $properties,
+			)
+		);
 
 		$result = $this->send("/api2/soap/ContactDatabaseFieldService?wsdl", 'create', $request);
 		return $result;
 	}
 
-	public function update ($id, $label, $name, $minLength, $maxLength, $defaultValue, $key, $required, $inOverview, $contactDatabaseFieldGroupId, $position, $kindOfField, $picklistItems, $properties)
+    public function update(
+        $id,
+        $label = null,
+        $name = null,
+        $minLength = null,
+        $maxLength = null,
+        $defaultValue = null,
+        $key = null,
+        $required = null,
+        $inOverview = null,
+        $contactDatabaseFieldGroupId = null,
+        $position,
+        $kindOfField = null,
+        $picklistItems = null,
+        $properties = null
+    )
 	{
 		$request = array(
 			'updateRequest' => array(
@@ -45,7 +78,9 @@ class ContactDatabaseField extends TripolisService
 				'position' => $position,
 				'kindOfField' => $kindOfField,
 				'picklistItems' => $picklistItems,
-				'properties' => $properties,			)		);
+				'properties' => $properties,
+			)
+		);
 
 		$result = $this->send("/api2/soap/ContactDatabaseFieldService?wsdl", 'update', $request);
 		return $result;
@@ -55,7 +90,9 @@ class ContactDatabaseField extends TripolisService
 	{
 		$request = array(
 			'deleteRequest' => array(
-				'id' => $id,			)		);
+				'id' => $id,
+			)
+		);
 
 		$result = $this->send("/api2/soap/ContactDatabaseFieldService?wsdl", 'delete', $request);
 		return $result;
@@ -74,13 +111,17 @@ class ContactDatabaseField extends TripolisService
 		$request = array(
 			'getByContactDatabaseFieldGroupIdRequest' => array(
 				'contactDatabaseFieldGroupId' => $contactDatabaseFieldGroupId,
-				'paging' => array('pageSize' => 100, 'pageNr' => 1)			)		);
+				'paging' => array('pageSize' => 100, 'pageNr' => 1)
+			)
+		);
 
-		$return = [];		do {
+		$return = [];
+		do {
 			$result = $this->send("/api2/soap/ContactDatabaseFieldService?wsdl", 'getByContactDatabaseFieldGroupId', $request);
 			$request['getByContactDatabaseFieldGroupIdRequest']['paging']['pageNr']++;
 			foreach($result->contactDatabaseFields->contactDatabaseField as $row) {
-				$return[] = $row;			}
+				$return[] = $row;
+			}
 		} while(isset($result->paging->totalItems) && $result->paging->totalItems > count($return));
 
 		return $return;
@@ -91,13 +132,17 @@ class ContactDatabaseField extends TripolisService
 		$request = array(
 			'getByContactDatabaseIdRequest' => array(
 				'contactDatabaseId' => $contactDatabaseId,
-				'paging' => array('pageSize' => 100, 'pageNr' => 1)			)		);
+				'paging' => array('pageSize' => 100, 'pageNr' => 1)
+			)
+		);
 
-		$return = [];		do {
+		$return = [];
+		do {
 			$result = $this->send("/api2/soap/ContactDatabaseFieldService?wsdl", 'getByContactDatabaseId', $request);
 			$request['getByContactDatabaseIdRequest']['paging']['pageNr']++;
 			foreach($result->contactDatabaseFields->contactDatabaseField as $row) {
-				$return[] = $row;			}
+				$return[] = $row;
+			}
 		} while(isset($result->paging->totalItems) && $result->paging->totalItems > count($return));
 
 		return $return;

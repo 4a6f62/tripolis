@@ -8,7 +8,9 @@ class Workspace extends TripolisService
 	{
 		$request = array(
 			'getByIdRequest' => array(
-				'id' => $id,			)		);
+				'id' => $id,
+			)
+		);
 
 		$result = $this->send("/api2/soap/WorkspaceService?wsdl", 'getById', $request);
 		return $result->workspace;
@@ -19,13 +21,17 @@ class Workspace extends TripolisService
 		$request = array(
 			'getByContactDatabaseIdRequest' => array(
 				'contactDatabaseId' => $contactDatabaseId,
-				'paging' => array('pageSize' => 100, 'pageNr' => 1)			)		);
+				'paging' => array('pageSize' => 100, 'pageNr' => 1)
+			)
+		);
 
-		$return = [];		do {
+		$return = [];
+		do {
 			$result = $this->send("/api2/soap/WorkspaceService?wsdl", 'getByContactDatabaseId', $request);
 			$request['getByContactDatabaseIdRequest']['paging']['pageNr']++;
 			foreach($result->workspaces->workspace as $row) {
-				$return[] = $row;			}
+				$return[] = $row;
+			}
 		} while(isset($result->paging->totalItems) && $result->paging->totalItems > count($return));
 
 		return $return;
@@ -36,7 +42,9 @@ class Workspace extends TripolisService
 		$request = array(
 			'copyWorkspaceForContactDatabaseRequestRequest' => array(
 				'contactDatabaseName' => $contactDatabaseName,
-				'contactDatabaseLabel' => $contactDatabaseLabel,			)		);
+				'contactDatabaseLabel' => $contactDatabaseLabel,
+			)
+		);
 
 		$result = $this->send("/api2/soap/WorkspaceService?wsdl", 'copyForContactDatabase', $request);
 		return $result;
@@ -46,13 +54,17 @@ class Workspace extends TripolisService
 	{
 		$request = array(
 			'getAllRequest' => array(
-				'paging' => array('pageSize' => 100, 'pageNr' => 1)			)		);
+				'paging' => array('pageSize' => 100, 'pageNr' => 1)
+			)
+		);
 
-		$return = [];		do {
+		$return = [];
+		do {
 			$result = $this->send("/api2/soap/WorkspaceService?wsdl", 'getAll', $request);
 			$request['getAllRequest']['paging']['pageNr']++;
 			foreach($result->workspaces->workspace as $row) {
-				$return[] = $row;			}
+				$return[] = $row;
+			}
 		} while(isset($result->paging->totalItems) && $result->paging->totalItems > count($return));
 
 		return $return;
@@ -62,7 +74,9 @@ class Workspace extends TripolisService
 	{
 		$request = array(
 			'deleteRequest' => array(
-				'id' => $id,			)		);
+				'id' => $id,
+			)
+		);
 
 		$result = $this->send("/api2/soap/WorkspaceService?wsdl", 'delete', $request);
 		return $result;
@@ -76,7 +90,15 @@ class Workspace extends TripolisService
 		return $result;
 	}
 
-	public function create ($contactDatabaseId, $label, $name, $publicDomainName, $bounceDomainName, $listUnsubscribeHeader, $properties)
+    public function create(
+        $contactDatabaseId,
+        $label,
+        $name = null,
+        $publicDomainName = null,
+        $bounceDomainName = null,
+        $listUnsubscribeHeader,
+        $properties = null
+    )
 	{
 		$request = array(
 			'createRequest' => array(
@@ -86,13 +108,23 @@ class Workspace extends TripolisService
 				'publicDomainName' => $publicDomainName,
 				'bounceDomainName' => $bounceDomainName,
 				'listUnsubscribeHeader' => $listUnsubscribeHeader,
-				'properties' => $properties,			)		);
+				'properties' => $properties,
+			)
+		);
 
 		$result = $this->send("/api2/soap/WorkspaceService?wsdl", 'create', $request);
 		return $result;
 	}
 
-	public function update ($id, $label, $name, $publicDomainName, $bounceDomainName, $listUnsubscribeHeader, $properties)
+    public function update(
+        $id,
+        $label = null,
+        $name = null,
+        $publicDomainName = null,
+        $bounceDomainName = null,
+        $listUnsubscribeHeader = null,
+        $properties = null
+    )
 	{
 		$request = array(
 			'updateRequest' => array(
@@ -102,20 +134,24 @@ class Workspace extends TripolisService
 				'publicDomainName' => $publicDomainName,
 				'bounceDomainName' => $bounceDomainName,
 				'listUnsubscribeHeader' => $listUnsubscribeHeader,
-				'properties' => $properties,			)		);
+				'properties' => $properties,
+			)
+		);
 
 		$result = $this->send("/api2/soap/WorkspaceService?wsdl", 'update', $request);
 		return $result;
 	}
 
-	public function copy ($id, $userId, $workspaceName, $workspaceLabel)
+    public function copy($id, $userId = null, $workspaceName, $workspaceLabel)
 	{
 		$request = array(
 			'copyRequest' => array(
 				'id' => $id,
 				'userId' => $userId,
 				'workspaceName' => $workspaceName,
-				'workspaceLabel' => $workspaceLabel,			)		);
+				'workspaceLabel' => $workspaceLabel,
+			)
+		);
 
 		$result = $this->send("/api2/soap/WorkspaceService?wsdl", 'copy', $request);
 		return $result;

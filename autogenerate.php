@@ -33,6 +33,8 @@ foreach ($wsdls as $wsdl) {
         preg_match_all($pattern, $match, $matches);
         $classes[$className][$functionName]['request'] = $request;
         $classes[$className][$functionName]['params'] = $matches[2];
+        $classes[$className][$functionName]['params_required'] = getRequired($className, $functionName, $requestObj,
+            $classes[$className][$functionName]['params']);
         $pattern = '/^struct ' . $functionName . 'Response {/i';
         $matches = preg_grep($pattern, $types);
         $match = array_pop($matches);
@@ -55,8 +57,8 @@ foreach ($wsdls as $wsdl) {
         $src .= 'class ' . $class . ' extends TripolisService' . PHP_EOL . '{' . PHP_EOL;
         foreach ($functions as $name => $function) {
             $_params = '';
-            if ($function['params']) {
-                $_params = '$' . implode(', $', $function['params']);
+            if ($function['params_required']) {
+                $_params = '$' . implode(', $', $function['params_required']);
             }
             $request = $function['request'];
             $response = $function['response'];
@@ -92,7 +94,7 @@ foreach ($wsdls as $wsdl) {
         }
         $src .= '}';
 
-        file_put_contents('src/Tripolis/' . $class . '.php', $src);
+        file_put_contents('src/' . $class . '.php', $src);
     }
 
 }
@@ -122,5 +124,22 @@ function getResponseFields($response, $types, $depth = 1, $string = [])
     }
 
     return $string;
+}
+
+function getRequired($service, $operation, $request, $params)
+{
+    $url = sprintf('https://td39.tripolis.com/api2/docs/api?service=%sService&operation=%s&complextype=%s#complextype',
+        $service, $operation, $request);
+    $html = strip_tags(file_get_contents($url));
+
+    foreach ($params as &$param) {
+        $regex = sprintf('/%s \([^\)]*\) required/', $param);
+        preg_match($regex, $html, $matches);
+        if (!$matches) {
+            $param = $param . ' = null';
+        }
+    }
+
+    return $params;
 }
 

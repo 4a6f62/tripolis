@@ -9,24 +9,30 @@ class ContactDatabaseFieldGroup extends TripolisService
 		$request = array(
 			'getByContactDatabaseIdRequest' => array(
 				'contactDatabaseId' => $contactDatabaseId,
-				'paging' => array('pageSize' => 100, 'pageNr' => 1)			)		);
+				'paging' => array('pageSize' => 100, 'pageNr' => 1)
+			)
+		);
 
-		$return = [];		do {
+		$return = [];
+		do {
 			$result = $this->send("/api2/soap/ContactDatabaseFieldGroupService?wsdl", 'getByContactDatabaseId', $request);
 			$request['getByContactDatabaseIdRequest']['paging']['pageNr']++;
 			foreach($result->contactDatabaseFieldGroups->contactDatabaseFieldGroup as $row) {
-				$return[] = $row;			}
+				$return[] = $row;
+			}
 		} while(isset($result->paging->totalItems) && $result->paging->totalItems > count($return));
 
 		return $return;
 	}
 
-	public function delete ($id, $reassignContactDatabaseFieldGroupId)
+    public function delete($id, $reassignContactDatabaseFieldGroupId = null)
 	{
 		$request = array(
 			'deleteRequest' => array(
 				'id' => $id,
-				'reassignContactDatabaseFieldGroupId' => $reassignContactDatabaseFieldGroupId,			)		);
+				'reassignContactDatabaseFieldGroupId' => $reassignContactDatabaseFieldGroupId,
+			)
+		);
 
 		$result = $this->send("/api2/soap/ContactDatabaseFieldGroupService?wsdl", 'delete', $request);
 		return $result;
@@ -40,7 +46,7 @@ class ContactDatabaseFieldGroup extends TripolisService
 		return $result;
 	}
 
-	public function create ($contactDatabaseId, $label, $name, $position, $properties)
+    public function create($contactDatabaseId, $label, $name = null, $position, $properties = null)
 	{
 		$request = array(
 			'createRequest' => array(
@@ -48,13 +54,15 @@ class ContactDatabaseFieldGroup extends TripolisService
 				'label' => $label,
 				'name' => $name,
 				'position' => $position,
-				'properties' => $properties,			)		);
+				'properties' => $properties,
+			)
+		);
 
 		$result = $this->send("/api2/soap/ContactDatabaseFieldGroupService?wsdl", 'create', $request);
 		return $result;
 	}
 
-	public function update ($id, $label, $name, $position, $properties)
+    public function update($id, $label = null, $name = null, $position, $properties = null)
 	{
 		$request = array(
 			'updateRequest' => array(
@@ -62,7 +70,9 @@ class ContactDatabaseFieldGroup extends TripolisService
 				'label' => $label,
 				'name' => $name,
 				'position' => $position,
-				'properties' => $properties,			)		);
+				'properties' => $properties,
+			)
+		);
 
 		$result = $this->send("/api2/soap/ContactDatabaseFieldGroupService?wsdl", 'update', $request);
 		return $result;

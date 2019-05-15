@@ -8,7 +8,9 @@ class Image extends TripolisService
 	{
 		$request = array(
 			'countByWorkspaceIdRequest' => array(
-				'workspaceId' => $workspaceId,			)		);
+				'workspaceId' => $workspaceId,
+			)
+		);
 
 		$result = $this->send("/api2/soap/ImageService?wsdl", 'countByWorkspaceId', $request);
 		return $result;
@@ -18,7 +20,9 @@ class Image extends TripolisService
 	{
 		$request = array(
 			'deleteTagRequest' => array(
-				'tagId' => $tagId,			)		);
+				'tagId' => $tagId,
+			)
+		);
 
 		$result = $this->send("/api2/soap/ImageService?wsdl", 'deleteTag', $request);
 		return $result;
@@ -29,40 +33,57 @@ class Image extends TripolisService
 		$request = array(
 			'createTagRequest' => array(
 				'tag' => $tag,
-				'workspaceId' => $workspaceId,			)		);
+				'workspaceId' => $workspaceId,
+			)
+		);
 
 		$result = $this->send("/api2/soap/ImageService?wsdl", 'createTag', $request);
 		return $result;
 	}
 
-	public function getById ($includeContent)
+    public function getById($includeContent = null)
 	{
 		$request = array(
 			'getByIdRequest' => array(
-				'includeContent' => $includeContent,			)		);
+				'includeContent' => $includeContent,
+			)
+		);
 
 		$result = $this->send("/api2/soap/ImageService?wsdl", 'getById', $request);
 		return $result->image;
 	}
 
-	public function getByTagIds ($includeContent)
+    public function getByTagIds($includeContent = null)
 	{
 		$request = array(
 			'getByTagIdsRequest' => array(
 				'includeContent' => $includeContent,
-				'paging' => array('pageSize' => 100, 'pageNr' => 1)			)		);
+				'paging' => array('pageSize' => 100, 'pageNr' => 1)
+			)
+		);
 
-		$return = [];		do {
+		$return = [];
+		do {
 			$result = $this->send("/api2/soap/ImageService?wsdl", 'getByTagIds', $request);
 			$request['getByTagIdsRequest']['paging']['pageNr']++;
 			foreach($result->sorting as $row) {
-				$return[] = $row;			}
+				$return[] = $row;
+			}
 		} while(isset($result->paging->totalItems) && $result->paging->totalItems > count($return));
 
 		return $return;
 	}
 
-	public function create ($workspaceId, $label, $name, $description, $imageType, $content, $imageTagIds, $properties)
+    public function create(
+        $workspaceId,
+        $label,
+        $name = null,
+        $description = null,
+        $imageType,
+        $content,
+        $imageTagIds = null,
+        $properties = null
+    )
 	{
 		$request = array(
 			'createRequest' => array(
@@ -73,7 +94,9 @@ class Image extends TripolisService
 				'imageType' => $imageType,
 				'content' => $content,
 				'imageTagIds' => $imageTagIds,
-				'properties' => $properties,			)		);
+				'properties' => $properties,
+			)
+		);
 
 		$result = $this->send("/api2/soap/ImageService?wsdl", 'create', $request);
 		return $result;
@@ -84,30 +107,38 @@ class Image extends TripolisService
 		$request = array(
 			'getTagsByWorkspaceIdRequest' => array(
 				'workspaceId' => $workspaceId,
-				'paging' => array('pageSize' => 100, 'pageNr' => 1)			)		);
+				'paging' => array('pageSize' => 100, 'pageNr' => 1)
+			)
+		);
 
-		$return = [];		do {
+		$return = [];
+		do {
 			$result = $this->send("/api2/soap/ImageService?wsdl", 'getTagsByWorkspaceId', $request);
 			$request['getTagsByWorkspaceIdRequest']['paging']['pageNr']++;
 			foreach($result->tags->tag as $row) {
-				$return[] = $row;			}
+				$return[] = $row;
+			}
 		} while(isset($result->paging->totalItems) && $result->paging->totalItems > count($return));
 
 		return $return;
 	}
 
-	public function getByWorkspaceId ($includeContent)
+    public function getByWorkspaceId($includeContent = null)
 	{
 		$request = array(
 			'getByWorkspaceIdRequest' => array(
 				'includeContent' => $includeContent,
-				'paging' => array('pageSize' => 100, 'pageNr' => 1)			)		);
+				'paging' => array('pageSize' => 100, 'pageNr' => 1)
+			)
+		);
 
-		$return = [];		do {
+		$return = [];
+		do {
 			$result = $this->send("/api2/soap/ImageService?wsdl", 'getByWorkspaceId', $request);
 			$request['getByWorkspaceIdRequest']['paging']['pageNr']++;
 			foreach($result->images->image as $row) {
-				$return[] = $row;			}
+				$return[] = $row;
+			}
 		} while(isset($result->paging->totalItems) && $result->paging->totalItems > count($return));
 
 		return $return;
@@ -118,23 +149,36 @@ class Image extends TripolisService
 		$request = array(
 			'updateTagRequest' => array(
 				'tag' => $tag,
-				'tagId' => $tagId,			)		);
+				'tagId' => $tagId,
+			)
+		);
 
 		$result = $this->send("/api2/soap/ImageService?wsdl", 'updateTag', $request);
 		return $result;
 	}
 
-	public function countByTagIds ($imageTagIds)
+    public function countByTagIds($imageTagIds = null)
 	{
 		$request = array(
 			'countByImageTagsRequest' => array(
-				'imageTagIds' => $imageTagIds,			)		);
+				'imageTagIds' => $imageTagIds,
+			)
+		);
 
 		$result = $this->send("/api2/soap/ImageService?wsdl", 'countByTagIds', $request);
 		return $result;
 	}
 
-	public function update ($id, $label, $name, $description, $imageType, $content, $imageTagIds, $properties)
+    public function update(
+        $id,
+        $label = null,
+        $name = null,
+        $description = null,
+        $imageType = null,
+        $content = null,
+        $imageTagIds = null,
+        $properties = null
+    )
 	{
 		$request = array(
 			'updateRequest' => array(
@@ -145,7 +189,9 @@ class Image extends TripolisService
 				'imageType' => $imageType,
 				'content' => $content,
 				'imageTagIds' => $imageTagIds,
-				'properties' => $properties,			)		);
+				'properties' => $properties,
+			)
+		);
 
 		$result = $this->send("/api2/soap/ImageService?wsdl", 'update', $request);
 		return $result;
@@ -155,7 +201,9 @@ class Image extends TripolisService
 	{
 		$request = array(
 			'deleteRequest' => array(
-				'id' => $id,			)		);
+				'id' => $id,
+			)
+		);
 
 		$result = $this->send("/api2/soap/ImageService?wsdl", 'delete', $request);
 		return $result;

@@ -8,13 +8,17 @@ class ClientDomain extends TripolisService
 	{
 		$request = array(
 			'getByPartnerDomainRequest' => array(
-				'paging' => array('pageSize' => 100, 'pageNr' => 1)			)		);
+				'paging' => array('pageSize' => 100, 'pageNr' => 1)
+			)
+		);
 
-		$return = [];		do {
+		$return = [];
+		do {
 			$result = $this->send("/api2/soap/ClientDomainService?wsdl", 'getByPartnerDomain', $request);
 			$request['getByPartnerDomainRequest']['paging']['pageNr']++;
 			foreach($result->clientDomains->clientDomain as $row) {
-				$return[] = $row;			}
+				$return[] = $row;
+			}
 		} while(isset($result->paging->totalItems) && $result->paging->totalItems > count($return));
 
 		return $return;
@@ -32,19 +36,33 @@ class ClientDomain extends TripolisService
 	{
 		$request = array(
 			'getByUserRequest' => array(
-				'paging' => array('pageSize' => 100, 'pageNr' => 1)			)		);
+				'paging' => array('pageSize' => 100, 'pageNr' => 1)
+			)
+		);
 
-		$return = [];		do {
+		$return = [];
+		do {
 			$result = $this->send("/api2/soap/ClientDomainService?wsdl", 'getByUser', $request);
 			$request['getByUserRequest']['paging']['pageNr']++;
 			foreach($result->clientDomains->clientDomain as $row) {
-				$return[] = $row;			}
+				$return[] = $row;
+			}
 		} while(isset($result->paging->totalItems) && $result->paging->totalItems > count($return));
 
 		return $return;
 	}
 
-	public function create ($label, $name, $domainType, $partnerDomainId, $supportPhone, $supportEmail, $partnerRss, $virtualMtaId, $properties)
+    public function create(
+        $label,
+        $name = null,
+        $domainType,
+        $partnerDomainId = null,
+        $supportPhone = null,
+        $supportEmail = null,
+        $partnerRss = null,
+        $virtualMtaId = null,
+        $properties = null
+    )
 	{
 		$request = array(
 			'createRequest' => array(
@@ -56,7 +74,9 @@ class ClientDomain extends TripolisService
 				'supportEmail' => $supportEmail,
 				'partnerRss' => $partnerRss,
 				'virtualMtaId' => $virtualMtaId,
-				'properties' => $properties,			)		);
+				'properties' => $properties,
+			)
+		);
 
 		$result = $this->send("/api2/soap/ClientDomainService?wsdl", 'create', $request);
 		return $result;
@@ -65,7 +85,9 @@ class ClientDomain extends TripolisService
 	public function getByAuthInfo ()
 	{
 		$request = array(
-			'getByAuthInfoRequest' => array(			)		);
+			'getByAuthInfoRequest' => array(
+			)
+		);
 
 		$result = $this->send("/api2/soap/ClientDomainService?wsdl", 'getByAuthInfo', $request);
 		return $result->clientDomain;

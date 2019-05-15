@@ -9,7 +9,9 @@ class Article extends TripolisService
 		$request = array(
 			'updateTagRequest' => array(
 				'tag' => $tag,
-				'tagId' => $tagId,			)		);
+				'tagId' => $tagId,
+			)
+		);
 
 		$result = $this->send("/api2/soap/ArticleService?wsdl", 'updateTag', $request);
 		return $result;
@@ -22,7 +24,9 @@ class Article extends TripolisService
 				'id' => $id,
 				'newsletterId' => $newsletterId,
 				'newsletterSectionId' => $newsletterSectionId,
-				'position' => $position,			)		);
+				'position' => $position,
+			)
+		);
 
 		$result = $this->send("/api2/soap/ArticleService?wsdl", 'assignToNewsletterSection', $request);
 		return $result;
@@ -33,23 +37,29 @@ class Article extends TripolisService
 		$request = array(
 			'getByNewsletterIdRequest' => array(
 				'newsletterId' => $newsletterId,
-				'paging' => array('pageSize' => 100, 'pageNr' => 1)			)		);
+				'paging' => array('pageSize' => 100, 'pageNr' => 1)
+			)
+		);
 
-		$return = [];		do {
+		$return = [];
+		do {
 			$result = $this->send("/api2/soap/ArticleService?wsdl", 'getByNewsletterId', $request);
 			$request['getByNewsletterIdRequest']['paging']['pageNr']++;
 			foreach($result->articles->article as $row) {
-				$return[] = $row;			}
+				$return[] = $row;
+			}
 		} while(isset($result->paging->totalItems) && $result->paging->totalItems > count($return));
 
 		return $return;
 	}
 
-	public function countByTagIds ($tagIds)
+    public function countByTagIds($tagIds = null)
 	{
 		$request = array(
 			'countByTagIdsRequest' => array(
-				'tagIds' => $tagIds,			)		);
+				'tagIds' => $tagIds,
+			)
+		);
 
 		$result = $this->send("/api2/soap/ArticleService?wsdl", 'countByTagIds', $request);
 		return $result;
@@ -59,7 +69,9 @@ class Article extends TripolisService
 	{
 		$request = array(
 			'deleteRequest' => array(
-				'id' => $id,			)		);
+				'id' => $id,
+			)
+		);
 
 		$result = $this->send("/api2/soap/ArticleService?wsdl", 'delete', $request);
 		return $result;
@@ -73,7 +85,14 @@ class Article extends TripolisService
 		return $result;
 	}
 
-	public function update ($id, $label, $name, $properties, $articleTagIds, $articleFieldValues)
+    public function update(
+        $id,
+        $label = null,
+        $name = null,
+        $properties = null,
+        $articleTagIds = null,
+        $articleFieldValues = null
+    )
 	{
 		$request = array(
 			'updateRequest' => array(
@@ -82,7 +101,9 @@ class Article extends TripolisService
 				'name' => $name,
 				'properties' => $properties,
 				'articleTagIds' => $articleTagIds,
-				'articleFieldValues' => $articleFieldValues,			)		);
+				'articleFieldValues' => $articleFieldValues,
+			)
+		);
 
 		$result = $this->send("/api2/soap/ArticleService?wsdl", 'update', $request);
 		return $result;
@@ -92,20 +113,24 @@ class Article extends TripolisService
 	{
 		$request = array(
 			'countByNewsletterIdRequest' => array(
-				'newsletterId' => $newsletterId,			)		);
+				'newsletterId' => $newsletterId,
+			)
+		);
 
 		$result = $this->send("/api2/soap/ArticleService?wsdl", 'countByNewsletterId', $request);
 		return $result;
 	}
 
-	public function unassignFromNewsletterSection ($id, $newsletterId, $newsletterSectionId, $unassignAllArticles)
+    public function unassignFromNewsletterSection($id = null, $newsletterId, $newsletterSectionId, $unassignAllArticles)
 	{
 		$request = array(
 			'unassignFromNewsletterSectionRequest' => array(
 				'id' => $id,
 				'newsletterId' => $newsletterId,
 				'newsletterSectionId' => $newsletterSectionId,
-				'unassignAllArticles' => $unassignAllArticles,			)		);
+				'unassignAllArticles' => $unassignAllArticles,
+			)
+		);
 
 		$result = $this->send("/api2/soap/ArticleService?wsdl", 'unassignFromNewsletterSection', $request);
 		return $result;
@@ -115,7 +140,9 @@ class Article extends TripolisService
 	{
 		$request = array(
 			'getByIdRequest' => array(
-				'id' => $id,			)		);
+				'id' => $id,
+			)
+		);
 
 		$result = $this->send("/api2/soap/ArticleService?wsdl", 'getById', $request);
 		return $result->article;
@@ -126,7 +153,9 @@ class Article extends TripolisService
 		$request = array(
 			'createTagRequest' => array(
 				'tag' => $tag,
-				'workspaceId' => $workspaceId,			)		);
+				'workspaceId' => $workspaceId,
+			)
+		);
 
 		$result = $this->send("/api2/soap/ArticleService?wsdl", 'createTag', $request);
 		return $result;
@@ -138,13 +167,17 @@ class Article extends TripolisService
 			'getByTagIdsRequest' => array(
 				'tagIds' => $tagIds,
 				'matchAnyTag' => $matchAnyTag,
-				'paging' => array('pageSize' => 100, 'pageNr' => 1)			)		);
+				'paging' => array('pageSize' => 100, 'pageNr' => 1)
+			)
+		);
 
-		$return = [];		do {
+		$return = [];
+		do {
 			$result = $this->send("/api2/soap/ArticleService?wsdl", 'getByTagIds', $request);
 			$request['getByTagIdsRequest']['paging']['pageNr']++;
 			foreach($result->sorting as $row) {
-				$return[] = $row;			}
+				$return[] = $row;
+			}
 		} while(isset($result->paging->totalItems) && $result->paging->totalItems > count($return));
 
 		return $return;
@@ -154,7 +187,9 @@ class Article extends TripolisService
 	{
 		$request = array(
 			'deleteTagRequest' => array(
-				'tagId' => $tagId,			)		);
+				'tagId' => $tagId,
+			)
+		);
 
 		$result = $this->send("/api2/soap/ArticleService?wsdl", 'deleteTag', $request);
 		return $result;
@@ -164,7 +199,9 @@ class Article extends TripolisService
 	{
 		$request = array(
 			'countByWorkspaceIdRequest' => array(
-				'workspaceId' => $workspaceId,			)		);
+				'workspaceId' => $workspaceId,
+			)
+		);
 
 		$result = $this->send("/api2/soap/ArticleService?wsdl", 'countByWorkspaceId', $request);
 		return $result;
@@ -176,19 +213,30 @@ class Article extends TripolisService
 			'getByNewsletterTypeIdAndTagIdsRequest' => array(
 				'tagIds' => $tagIds,
 				'matchAnyTag' => $matchAnyTag,
-				'paging' => array('pageSize' => 100, 'pageNr' => 1)			)		);
+				'paging' => array('pageSize' => 100, 'pageNr' => 1)
+			)
+		);
 
-		$return = [];		do {
+		$return = [];
+		do {
 			$result = $this->send("/api2/soap/ArticleService?wsdl", 'getByNewsletterTypeIdAndTagIds', $request);
 			$request['getByNewsletterTypeIdAndTagIdsRequest']['paging']['pageNr']++;
 			foreach($result->articles->article as $row) {
-				$return[] = $row;			}
+				$return[] = $row;
+			}
 		} while(isset($result->paging->totalItems) && $result->paging->totalItems > count($return));
 
 		return $return;
 	}
 
-	public function create ($articleTypeId, $label, $name, $properties, $articleTagIds, $articleFieldValues)
+    public function create(
+        $articleTypeId,
+        $label,
+        $name = null,
+        $properties = null,
+        $articleTagIds = null,
+        $articleFieldValues = null
+    )
 	{
 		$request = array(
 			'createRequest' => array(
@@ -197,7 +245,9 @@ class Article extends TripolisService
 				'name' => $name,
 				'properties' => $properties,
 				'articleTagIds' => $articleTagIds,
-				'articleFieldValues' => $articleFieldValues,			)		);
+				'articleFieldValues' => $articleFieldValues,
+			)
+		);
 
 		$result = $this->send("/api2/soap/ArticleService?wsdl", 'create', $request);
 		return $result;
@@ -208,13 +258,17 @@ class Article extends TripolisService
 		$request = array(
 			'getTagsByWorkspaceIdRequest' => array(
 				'workspaceId' => $workspaceId,
-				'paging' => array('pageSize' => 100, 'pageNr' => 1)			)		);
+				'paging' => array('pageSize' => 100, 'pageNr' => 1)
+			)
+		);
 
-		$return = [];		do {
+		$return = [];
+		do {
 			$result = $this->send("/api2/soap/ArticleService?wsdl", 'getTagsByWorkspaceId', $request);
 			$request['getTagsByWorkspaceIdRequest']['paging']['pageNr']++;
 			foreach($result->tags->tag as $row) {
-				$return[] = $row;			}
+				$return[] = $row;
+			}
 		} while(isset($result->paging->totalItems) && $result->paging->totalItems > count($return));
 
 		return $return;
@@ -225,13 +279,17 @@ class Article extends TripolisService
 		$request = array(
 			'getByWorkspaceIdRequest' => array(
 				'workspaceId' => $workspaceId,
-				'paging' => array('pageSize' => 100, 'pageNr' => 1)			)		);
+				'paging' => array('pageSize' => 100, 'pageNr' => 1)
+			)
+		);
 
-		$return = [];		do {
+		$return = [];
+		do {
 			$result = $this->send("/api2/soap/ArticleService?wsdl", 'getByWorkspaceId', $request);
 			$request['getByWorkspaceIdRequest']['paging']['pageNr']++;
 			foreach($result->articles->article as $row) {
-				$return[] = $row;			}
+				$return[] = $row;
+			}
 		} while(isset($result->paging->totalItems) && $result->paging->totalItems > count($return));
 
 		return $return;

@@ -4,7 +4,13 @@ namespace jobcastrop\tripolis;
 
 class Publishing extends TripolisService
 {
-	public function publishTransactionalSms ($contactId, $smsMessageId, $scheduleAt, $smsJobTagIds, $properties)
+    public function publishTransactionalSms(
+        $contactId,
+        $smsMessageId,
+        $scheduleAt = null,
+        $smsJobTagIds = null,
+        $properties = null
+    )
 	{
 		$request = array(
 			'publishTransactionalSmsRequest' => array(
@@ -12,7 +18,9 @@ class Publishing extends TripolisService
 				'smsMessageId' => $smsMessageId,
 				'scheduleAt' => $scheduleAt,
 				'smsJobTagIds' => $smsJobTagIds,
-				'properties' => $properties,			)		);
+				'properties' => $properties,
+			)
+		);
 
 		$result = $this->send("/api2/soap/PublishingService?wsdl", 'publishTransactionalSms', $request);
 		return $result;
@@ -23,19 +31,34 @@ class Publishing extends TripolisService
 		$request = array(
 			'getTagsByWorkspaceIdRequest' => array(
 				'workspaceId' => $workspaceId,
-				'paging' => array('pageSize' => 100, 'pageNr' => 1)			)		);
+				'paging' => array('pageSize' => 100, 'pageNr' => 1)
+			)
+		);
 
-		$return = [];		do {
+		$return = [];
+		do {
 			$result = $this->send("/api2/soap/PublishingService?wsdl", 'getTagsByWorkspaceId', $request);
 			$request['getTagsByWorkspaceIdRequest']['paging']['pageNr']++;
 			foreach($result->tags->tag as $row) {
-				$return[] = $row;			}
+				$return[] = $row;
+			}
 		} while(isset($result->paging->totalItems) && $result->paging->totalItems > count($return));
 
 		return $return;
 	}
 
-	public function getByWorkspaceId ($workspaceId, $timeRange, $volume, $status, $mailingType, $channelType, $isArchived, $contactGroupId, $smartGroupId, $userType)
+    public function getByWorkspaceId(
+        $workspaceId,
+        $timeRange = null,
+        $volume = null,
+        $status = null,
+        $mailingType = null,
+        $channelType = null,
+        $isArchived = null,
+        $contactGroupId = null,
+        $smartGroupId = null,
+        $userType = null
+    )
 	{
 		$request = array(
 			'jobsByWorkspaceIdRequest' => array(
@@ -49,13 +72,17 @@ class Publishing extends TripolisService
 				'contactGroupId' => $contactGroupId,
 				'smartGroupId' => $smartGroupId,
 				'userType' => $userType,
-				'paging' => array('pageSize' => 100, 'pageNr' => 1)			)		);
+				'paging' => array('pageSize' => 100, 'pageNr' => 1)
+			)
+		);
 
-		$return = [];		do {
+		$return = [];
+		do {
 			$result = $this->send("/api2/soap/PublishingService?wsdl", 'getByWorkspaceId', $request);
 			$request['jobsByWorkspaceIdRequest']['paging']['pageNr']++;
 			foreach($result->jobs->job as $row) {
-				$return[] = $row;			}
+				$return[] = $row;
+			}
 		} while(isset($result->paging->totalItems) && $result->paging->totalItems > count($return));
 
 		return $return;
@@ -65,7 +92,9 @@ class Publishing extends TripolisService
 	{
 		$request = array(
 			'deleteTagRequest' => array(
-				'tagId' => $tagId,			)		);
+				'tagId' => $tagId,
+			)
+		);
 
 		$result = $this->send("/api2/soap/PublishingService?wsdl", 'deleteTag', $request);
 		return $result;
@@ -75,13 +104,23 @@ class Publishing extends TripolisService
 	{
 		$request = array(
 			'getByIdRequest' => array(
-				'id' => $id,			)		);
+				'id' => $id,
+			)
+		);
 
 		$result = $this->send("/api2/soap/PublishingService?wsdl", 'getById', $request);
 		return $result->job;
 	}
 
-	public function publishEmail ($contactGroupId, $smartGroupId, $directEmailId, $newsletterId, $mailsPerHour, $scheduleAt, $mailJobTagIds)
+    public function publishEmail(
+        $contactGroupId = null,
+        $smartGroupId = null,
+        $directEmailId = null,
+        $newsletterId = null,
+        $mailsPerHour,
+        $scheduleAt = null,
+        $mailJobTagIds = null
+    )
 	{
 		$request = array(
 			'publishEmailRequest' => array(
@@ -91,7 +130,9 @@ class Publishing extends TripolisService
 				'newsletterId' => $newsletterId,
 				'mailsPerHour' => $mailsPerHour,
 				'scheduleAt' => $scheduleAt,
-				'mailJobTagIds' => $mailJobTagIds,			)		);
+				'mailJobTagIds' => $mailJobTagIds,
+			)
+		);
 
 		$result = $this->send("/api2/soap/PublishingService?wsdl", 'publishEmail', $request);
 		return $result;
@@ -102,7 +143,9 @@ class Publishing extends TripolisService
 		$request = array(
 			'createTagRequest' => array(
 				'tag' => $tag,
-				'workspaceId' => $workspaceId,			)		);
+				'workspaceId' => $workspaceId,
+			)
+		);
 
 		$result = $this->send("/api2/soap/PublishingService?wsdl", 'createTag', $request);
 		return $result;
@@ -113,13 +156,17 @@ class Publishing extends TripolisService
 		$request = array(
 			'getByTagIdsRequest' => array(
 				'timeRange' => $timeRange,
-				'paging' => array('pageSize' => 100, 'pageNr' => 1)			)		);
+				'paging' => array('pageSize' => 100, 'pageNr' => 1)
+			)
+		);
 
-		$return = [];		do {
+		$return = [];
+		do {
 			$result = $this->send("/api2/soap/PublishingService?wsdl", 'getByTagIds', $request);
 			$request['getByTagIdsRequest']['paging']['pageNr']++;
 			foreach($result->jobs->job as $row) {
-				$return[] = $row;			}
+				$return[] = $row;
+			}
 		} while(isset($result->paging->totalItems) && $result->paging->totalItems > count($return));
 
 		return $return;
@@ -133,7 +180,14 @@ class Publishing extends TripolisService
 		return $result;
 	}
 
-	public function viewLastMailing ($contactGroupId, $smartGroupId, $newsletterTypeId, $directEmailTypeId, $sampleContactId, $mailingType)
+    public function viewLastMailing(
+        $contactGroupId = null,
+        $smartGroupId = null,
+        $newsletterTypeId = null,
+        $directEmailTypeId = null,
+        $sampleContactId = null,
+        $mailingType
+    )
 	{
 		$request = array(
 			'viewLastMailingRequest' => array(
@@ -142,20 +196,29 @@ class Publishing extends TripolisService
 				'newsletterTypeId' => $newsletterTypeId,
 				'directEmailTypeId' => $directEmailTypeId,
 				'sampleContactId' => $sampleContactId,
-				'mailingType' => $mailingType,			)		);
+				'mailingType' => $mailingType,
+			)
+		);
 
 		$result = $this->send("/api2/soap/PublishingService?wsdl", 'viewLastMailing', $request);
 		return $result->snapshot->job;
 	}
 
-	public function viewLastSms ($contactGroupId, $smartGroupId, $smsTypeId, $sampleContactId)
+    public function viewLastSms(
+        $contactGroupId = null,
+        $smartGroupId = null,
+        $smsTypeId = null,
+        $sampleContactId = null
+    )
 	{
 		$request = array(
 			'viewLastSmsRequest' => array(
 				'contactGroupId' => $contactGroupId,
 				'smartGroupId' => $smartGroupId,
 				'smsTypeId' => $smsTypeId,
-				'sampleContactId' => $sampleContactId,			)		);
+				'sampleContactId' => $sampleContactId,
+			)
+		);
 
 		$result = $this->send("/api2/soap/PublishingService?wsdl", 'viewLastSms', $request);
 		return $result->snapshot->job;
@@ -166,13 +229,24 @@ class Publishing extends TripolisService
 		$request = array(
 			'updateTagRequest' => array(
 				'tag' => $tag,
-				'tagId' => $tagId,			)		);
+				'tagId' => $tagId,
+			)
+		);
 
 		$result = $this->send("/api2/soap/PublishingService?wsdl", 'updateTag', $request);
 		return $result;
 	}
 
-	public function publishSampleTestEmail ($testContactGroupId, $contactGroupId, $smartGroupId, $directEmailId, $newsletterId, $sampleRate, $scheduleAt, $mailJobTagIds)
+    public function publishSampleTestEmail(
+        $testContactGroupId,
+        $contactGroupId = null,
+        $smartGroupId = null,
+        $directEmailId = null,
+        $newsletterId = null,
+        $sampleRate,
+        $scheduleAt = null,
+        $mailJobTagIds = null
+    )
 	{
 		$request = array(
 			'publishSampleTestEmailRequest' => array(
@@ -183,13 +257,21 @@ class Publishing extends TripolisService
 				'newsletterId' => $newsletterId,
 				'sampleRate' => $sampleRate,
 				'scheduleAt' => $scheduleAt,
-				'mailJobTagIds' => $mailJobTagIds,			)		);
+				'mailJobTagIds' => $mailJobTagIds,
+			)
+		);
 
 		$result = $this->send("/api2/soap/PublishingService?wsdl", 'publishSampleTestEmail', $request);
 		return $result;
 	}
 
-	public function publishTestEmail ($testContactGroupId, $directEmailId, $newsletterId, $scheduleAt, $mailJobTagIds)
+    public function publishTestEmail(
+        $testContactGroupId,
+        $directEmailId = null,
+        $newsletterId = null,
+        $scheduleAt = null,
+        $mailJobTagIds = null
+    )
 	{
 		$request = array(
 			'publishTestEmailRequest' => array(
@@ -197,13 +279,21 @@ class Publishing extends TripolisService
 				'directEmailId' => $directEmailId,
 				'newsletterId' => $newsletterId,
 				'scheduleAt' => $scheduleAt,
-				'mailJobTagIds' => $mailJobTagIds,			)		);
+				'mailJobTagIds' => $mailJobTagIds,
+			)
+		);
 
 		$result = $this->send("/api2/soap/PublishingService?wsdl", 'publishTestEmail', $request);
 		return $result;
 	}
 
-	public function publishSms ($smsMessageId, $contactGroupId, $smartGroupId, $scheduleAt, $smsJobTagIds)
+    public function publishSms(
+        $smsMessageId,
+        $contactGroupId = null,
+        $smartGroupId = null,
+        $scheduleAt = null,
+        $smsJobTagIds = null
+    )
 	{
 		$request = array(
 			'publishSmsRequest' => array(
@@ -211,13 +301,22 @@ class Publishing extends TripolisService
 				'contactGroupId' => $contactGroupId,
 				'smartGroupId' => $smartGroupId,
 				'scheduleAt' => $scheduleAt,
-				'smsJobTagIds' => $smsJobTagIds,			)		);
+				'smsJobTagIds' => $smsJobTagIds,
+			)
+		);
 
 		$result = $this->send("/api2/soap/PublishingService?wsdl", 'publishSms', $request);
 		return $result;
 	}
 
-	public function publishTransactionalEmail ($contactId, $directEmailId, $newsletterId, $scheduleAt, $mailJobTagIds, $properties)
+    public function publishTransactionalEmail(
+        $contactId,
+        $directEmailId = null,
+        $newsletterId = null,
+        $scheduleAt = null,
+        $mailJobTagIds = null,
+        $properties = null
+    )
 	{
 		$request = array(
 			'publishTransactionalEmailRequest' => array(
@@ -226,7 +325,9 @@ class Publishing extends TripolisService
 				'newsletterId' => $newsletterId,
 				'scheduleAt' => $scheduleAt,
 				'mailJobTagIds' => $mailJobTagIds,
-				'properties' => $properties,			)		);
+				'properties' => $properties,
+			)
+		);
 
 		$result = $this->send("/api2/soap/PublishingService?wsdl", 'publishTransactionalEmail', $request);
 		return $result;

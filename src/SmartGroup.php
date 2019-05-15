@@ -9,30 +9,38 @@ class SmartGroup extends TripolisService
 		$request = array(
 			'getByContactDatabaseIdRequest' => array(
 				'contactDatabaseId' => $contactDatabaseId,
-				'paging' => array('pageSize' => 100, 'pageNr' => 1)			)		);
+				'paging' => array('pageSize' => 100, 'pageNr' => 1)
+			)
+		);
 
-		$return = [];		do {
+		$return = [];
+		do {
 			$result = $this->send("/api2/soap/SmartGroupService?wsdl", 'getByContactDatabaseId', $request);
 			$request['getByContactDatabaseIdRequest']['paging']['pageNr']++;
 			foreach($result->smartGroups->smartGroup as $row) {
-				$return[] = $row;			}
+				$return[] = $row;
+			}
 		} while(isset($result->paging->totalItems) && $result->paging->totalItems > count($return));
 
 		return $return;
 	}
 
-	public function getContacts ($returnContactFields)
+    public function getContacts($returnContactFields = null)
 	{
 		$request = array(
 			'getContactsRequest' => array(
 				'returnContactFields' => $returnContactFields,
-				'paging' => array('pageSize' => 100, 'pageNr' => 1)			)		);
+				'paging' => array('pageSize' => 100, 'pageNr' => 1)
+			)
+		);
 
-		$return = [];		do {
+		$return = [];
+		do {
 			$result = $this->send("/api2/soap/SmartGroupService?wsdl", 'getContacts', $request);
 			$request['getContactsRequest']['paging']['pageNr']++;
 			foreach($result->contacts->contact as $row) {
-				$return[] = $row;			}
+				$return[] = $row;
+			}
 		} while(isset($result->paging->totalItems) && $result->paging->totalItems > count($return));
 
 		return $return;
@@ -42,7 +50,9 @@ class SmartGroup extends TripolisService
 	{
 		$request = array(
 			'getByIdRequest' => array(
-				'id' => $id,			)		);
+				'id' => $id,
+			)
+		);
 
 		$result = $this->send("/api2/soap/SmartGroupService?wsdl", 'getById', $request);
 		return $result->smartGroup;

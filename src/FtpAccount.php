@@ -12,7 +12,18 @@ class FtpAccount extends TripolisService
 		return $result;
 	}
 
-	public function create ($label, $name, $properties, $protocol, $host, $port, $username, $password, $remoteFolder, $ftpMode)
+    public function create(
+        $label,
+        $name,
+        $properties = null,
+        $protocol,
+        $host,
+        $port = null,
+        $username,
+        $password,
+        $remoteFolder = null,
+        $ftpMode = null
+    )
 	{
 		$request = array(
 			'createRequest' => array(
@@ -25,7 +36,9 @@ class FtpAccount extends TripolisService
 				'username' => $username,
 				'password' => $password,
 				'remoteFolder' => $remoteFolder,
-				'ftpMode' => $ftpMode,			)		);
+				'ftpMode' => $ftpMode,
+			)
+		);
 
 		$result = $this->send("/api2/soap/FtpAccountService?wsdl", 'create', $request);
 		return $result;

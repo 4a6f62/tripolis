@@ -8,7 +8,9 @@ class NewsletterTemplate extends TripolisService
 	{
 		$request = array(
 			'getByIdRequest' => array(
-				'id' => $id,			)		);
+				'id' => $id,
+			)
+		);
 
 		$result = $this->send("/api2/soap/NewsletterTemplateService?wsdl", 'getById', $request);
 		return $result->newsletterTemplate;
@@ -19,13 +21,17 @@ class NewsletterTemplate extends TripolisService
 		$request = array(
 			'getByNewsletterTypeIdRequest' => array(
 				'newsletterTypeId' => $newsletterTypeId,
-				'paging' => array('pageSize' => 100, 'pageNr' => 1)			)		);
+				'paging' => array('pageSize' => 100, 'pageNr' => 1)
+			)
+		);
 
-		$return = [];		do {
+		$return = [];
+		do {
 			$result = $this->send("/api2/soap/NewsletterTemplateService?wsdl", 'getByNewsletterTypeId', $request);
 			$request['getByNewsletterTypeIdRequest']['paging']['pageNr']++;
 			foreach($result->newsletterTemplates->newsletterTemplate as $row) {
-				$return[] = $row;			}
+				$return[] = $row;
+			}
 		} while(isset($result->paging->totalItems) && $result->paging->totalItems > count($return));
 
 		return $return;
@@ -35,7 +41,9 @@ class NewsletterTemplate extends TripolisService
 	{
 		$request = array(
 			'deleteRequest' => array(
-				'id' => $id,			)		);
+				'id' => $id,
+			)
+		);
 
 		$result = $this->send("/api2/soap/NewsletterTemplateService?wsdl", 'delete', $request);
 		return $result;
@@ -49,7 +57,15 @@ class NewsletterTemplate extends TripolisService
 		return $result;
 	}
 
-	public function create ($newsletterTypeId, $label, $name, $newsletterTemplateType, $description, $source, $properties)
+    public function create(
+        $newsletterTypeId,
+        $label,
+        $name = null,
+        $newsletterTemplateType,
+        $description = null,
+        $source,
+        $properties = null
+    )
 	{
 		$request = array(
 			'createRequest' => array(
@@ -59,13 +75,15 @@ class NewsletterTemplate extends TripolisService
 				'newsletterTemplateType' => $newsletterTemplateType,
 				'description' => $description,
 				'source' => $source,
-				'properties' => $properties,			)		);
+				'properties' => $properties,
+			)
+		);
 
 		$result = $this->send("/api2/soap/NewsletterTemplateService?wsdl", 'create', $request);
 		return $result;
 	}
 
-	public function update ($id, $label, $name, $description, $source, $properties)
+    public function update($id, $label = null, $name = null, $description = null, $source = null, $properties = null)
 	{
 		$request = array(
 			'updateRequest' => array(
@@ -74,7 +92,9 @@ class NewsletterTemplate extends TripolisService
 				'name' => $name,
 				'description' => $description,
 				'source' => $source,
-				'properties' => $properties,			)		);
+				'properties' => $properties,
+			)
+		);
 
 		$result = $this->send("/api2/soap/NewsletterTemplateService?wsdl", 'update', $request);
 		return $result;

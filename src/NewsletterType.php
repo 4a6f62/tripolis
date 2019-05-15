@@ -16,13 +16,27 @@ class NewsletterType extends TripolisService
 	{
 		$request = array(
 			'deleteRequest' => array(
-				'id' => $id,			)		);
+				'id' => $id,
+			)
+		);
 
 		$result = $this->send("/api2/soap/NewsletterTypeService?wsdl", 'delete', $request);
 		return $result;
 	}
 
-	public function create ($workspaceId, $label, $name, $fromName, $fromAddress, $toEmailFieldId, $replyToAddress, $defaultSubject, $encoding, $enableAttachments, $properties)
+    public function create(
+        $workspaceId,
+        $label,
+        $name = null,
+        $fromName = null,
+        $fromAddress,
+        $toEmailFieldId,
+        $replyToAddress = null,
+        $defaultSubject = null,
+        $encoding = null,
+        $enableAttachments = null,
+        $properties = null
+    )
 	{
 		$request = array(
 			'createRequest' => array(
@@ -36,13 +50,27 @@ class NewsletterType extends TripolisService
 				'defaultSubject' => $defaultSubject,
 				'encoding' => $encoding,
 				'enableAttachments' => $enableAttachments,
-				'properties' => $properties,			)		);
+				'properties' => $properties,
+			)
+		);
 
 		$result = $this->send("/api2/soap/NewsletterTypeService?wsdl", 'create', $request);
 		return $result;
 	}
 
-	public function update ($id, $label, $name, $fromName, $fromAddress, $toEmailFieldId, $replyToAddress, $defaultSubject, $encoding, $enableAttachments, $properties)
+    public function update(
+        $id,
+        $label = null,
+        $name = null,
+        $fromName = null,
+        $fromAddress = null,
+        $toEmailFieldId = null,
+        $replyToAddress = null,
+        $defaultSubject = null,
+        $encoding = null,
+        $enableAttachments = null,
+        $properties = null
+    )
 	{
 		$request = array(
 			'updateRequest' => array(
@@ -56,7 +84,9 @@ class NewsletterType extends TripolisService
 				'defaultSubject' => $defaultSubject,
 				'encoding' => $encoding,
 				'enableAttachments' => $enableAttachments,
-				'properties' => $properties,			)		);
+				'properties' => $properties,
+			)
+		);
 
 		$result = $this->send("/api2/soap/NewsletterTypeService?wsdl", 'update', $request);
 		return $result;
@@ -67,13 +97,17 @@ class NewsletterType extends TripolisService
 		$request = array(
 			'getByWorkspaceIdRequest' => array(
 				'workspaceId' => $workspaceId,
-				'paging' => array('pageSize' => 100, 'pageNr' => 1)			)		);
+				'paging' => array('pageSize' => 100, 'pageNr' => 1)
+			)
+		);
 
-		$return = [];		do {
+		$return = [];
+		do {
 			$result = $this->send("/api2/soap/NewsletterTypeService?wsdl", 'getByWorkspaceId', $request);
 			$request['getByWorkspaceIdRequest']['paging']['pageNr']++;
 			foreach($result->newsletterTypes->newsletterType as $row) {
-				$return[] = $row;			}
+				$return[] = $row;
+			}
 		} while(isset($result->paging->totalItems) && $result->paging->totalItems > count($return));
 
 		return $return;
@@ -83,7 +117,9 @@ class NewsletterType extends TripolisService
 	{
 		$request = array(
 			'getByIdRequest' => array(
-				'id' => $id,			)		);
+				'id' => $id,
+			)
+		);
 
 		$result = $this->send("/api2/soap/NewsletterTypeService?wsdl", 'getById', $request);
 		return $result->newsletterType;
